@@ -1,9 +1,12 @@
-function print_key() {
-  echo -ne $*
+refresh_keys () {
+  BUFFER=''
+  zle accept-line
 }
 
+zle -N refresh_keys
+
 function remove_keys() {
-  print_key "\033]1337;PopKeyLabels\a"
+  pr_touchbar=" --- $state_name"
 }
 
 function unbind_keys() {
@@ -21,13 +24,17 @@ function set_state() {
   state=$1
 }
 
-function create_key() {
-  print_key "\033]1337;SetKeyLabel=F${1}=${2}\a"
+function set_state_name() {
+  state_name=$1
+}
 
+function create_key() {
+  pr_touchbar+=("%{$fg_bold[blue]%}F${1}%{$fg_bold[yellow]%}:%{$fg_bold[green]%}${2}%{$reset_color%}")
+  
   if [ "$4" = "-s" ]; then
     bindkey -s $keys[$1] "$3 \n"
   else
-    bindkey $keys[$1] $3
+    bindkey  $keys[$1] "$3"
   fi
 }
 
