@@ -86,6 +86,9 @@ views:
       text: Git status
       command: git status
 ```
+# TODO
+
+- [ ] Change plugin name
 
 
 ## Contributing
