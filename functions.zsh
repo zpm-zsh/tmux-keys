@@ -6,7 +6,7 @@ refresh_keys () {
 zle -N refresh_keys
 
 function remove_keys() {
-  pr_touchbar=" --- $state_name"
+  pr_shortkeys=" --- $state_name"
 }
 
 function unbind_keys() {
@@ -29,7 +29,7 @@ function set_state_name() {
 }
 
 function create_key() {
-  pr_touchbar+=("%{$fg_bold[blue]%}F${1}%{$fg_bold[yellow]%}:%{$fg_bold[green]%}${2}%{$reset_color%}")
+  pr_shortkeys+=("%{$fg_bold[blue]%}F${1}%{$fg_bold[yellow]%}:%{$fg_bold[green]%}${2}%{$reset_color%}")
   
   if [ "$4" = "-s" ]; then
     bindkey -s $keys[$1] "$3 \n"
