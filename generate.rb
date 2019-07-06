@@ -39,8 +39,10 @@ class Parser
       code << "function #{Digest::MD5.hexdigest(view)}_view() {"
       code << "\tset_state '#{Digest::MD5.hexdigest(view)}'"
       code << "\tset_state_name '#{view}'\n"
-      code << "\tremove_and_unbind_keys\n"
+      code << "unbind_keys\n"
+      code << "prefix_keys\n"
       code << commands.join("\n")
+      code << "suffix_keys\n"
       code << "\n\tzle && zle reset-prompt" 
       code << "}"
 

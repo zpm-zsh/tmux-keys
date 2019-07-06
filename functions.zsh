@@ -5,19 +5,18 @@ refresh_keys () {
 
 zle -N refresh_keys
 
-function remove_keys() {
-  pr_shortkeys=" --- $state_name"
+function prefix_keys() {
+  pr_shortkeys=(" -- %{$fg_bold[cyan]%}$state_name%{$reset_color%}")
+}
+
+function suffix_keys() {
+  pr_shortkeys+=(" --")
 }
 
 function unbind_keys() {
   for key in "$keys[@]"; do
     bindkey -s "$key" ''
   done
-}
-
-function remove_and_unbind_keys() {
-  remove_keys
-  unbind_keys
 }
 
 function set_state() {
