@@ -1,24 +1,24 @@
-source ${0:A:h}/functions.zsh
+source "${0:A:h}"/functions.zsh
 
-if [ $ZDOTDIR ]; then
+if [ "$ZDOTDIR" ]; then
   export _PREFIX=$ZDOTDIR
 else
-  export _PREFIX="~/"
+  export _PREFIX="$HOME"
 fi
 
-if [ ! -e $_PREFIX/.zsh-f-shortcuts.yaml ]; then
-  cp ${0:A:h}/zsh-f-shortcuts.example.yaml $_PREFIX/.zsh-f-shortcuts.yaml
+if [ ! -e "$_PREFIX"/.zsh-f-shortcuts.yaml ]; then
+  cp "${0:A:h}"/zsh-f-shortcuts.example.yaml "$_PREFIX"/.zsh-f-shortcuts.yaml
 fi
 
-if [ ! -e /tmp/zpm-zsh-f-shorcuts.$USER.zsh ]; then
-  ruby ${0:A:h}/generate.rb
+if [ ! -e /tmp/zpm-zsh-f-shorcuts.\""$USER"\".zsh ]; then
+  ruby "${0:A:h}"/generate.rb
 fi
 
-if [ $_PREFIX/.zsh-f-shortcuts.yaml -nt /tmp/zpm-zsh-f-shorcuts.$USER.zsh ]; then
-  ruby ${0:A:h}/generate.rb
+if [ "$_PREFIX"/.zsh-f-shortcuts.yaml -nt /tmp/zpm-zsh-f-shorcuts."$USER".zsh ]; then
+  ruby "${0:A:h}"/generate.rb
 fi
 
 
-cache_file="/tmp/zpm-zsh-f-shorcuts.$USER.zsh"
+cache_file="/tmp/zpm-zsh-f-shorcuts.\"$USER\".zsh"
 
 source "$cache_file"
