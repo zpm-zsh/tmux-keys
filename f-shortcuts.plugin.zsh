@@ -1,24 +1,25 @@
-source "${0:A:h}"/functions.zsh
+if [[ -z "${TMUX}" ]]; then
+  return 0
+fi
 
-if [ "$ZDOTDIR" ]; then
-  export _PREFIX=$ZDOTDIR
+# Standarized $0 handling, following:
+# https://zdharma-continuum.github.io/Zsh-100-Commits-Club/Zsh-Plugin-Standard.html
+0="${${ZERO:-${0:#$ZSH_ARGZERO}}:-${(%):-%N}}"
+0="${${(M)0:#/*}:-$PWD/$0}"
+_DIRNAME="${0:h}"
+
+STAT_CACHE_FILE="${TMPDIR:-/tmp}/zsh-${UID}/tmux-keys.zsh"
+
+source "${_DIRNAME}/functions.zsh"
+
+
+if [[ "$STAT_CACHE_FILE" -nt "${HOME}/.tmux-keys.yaml" ]]; then
+  source "$STAT_CACHE_FILE"
 else
-  export _PREFIX="$HOME"
+  if [ ! -e "${HOME}/.tmux-keys.yaml" ]; then
+    cp "${_DIRNAME}/tmux-keys.example.yaml" "${HOME}/.tmux-keys.yaml"
+  fi
+
+  UID="${UID}" node "${_DIRNAME}/generate.js"
+  source "${STAT_CACHE_FILE}"
 fi
-
-if [ ! -e "$_PREFIX"/.zsh-f-shortcuts.yaml ]; then
-  cp "${0:A:h}"/zsh-f-shortcuts.example.yaml "$_PREFIX"/.zsh-f-shortcuts.yaml
-fi
-
-if [ ! -e /tmp/zpm-zsh-f-shorcuts.\""$USER"\".zsh ]; then
-  ruby "${0:A:h}"/generate.rb
-fi
-
-if [ "$_PREFIX"/.zsh-f-shortcuts.yaml -nt /tmp/zpm-zsh-f-shorcuts."$USER".zsh ]; then
-  ruby "${0:A:h}"/generate.rb
-fi
-
-
-cache_file="/tmp/zpm-zsh-f-shorcuts.\"$USER\".zsh"
-
-source "$cache_file"

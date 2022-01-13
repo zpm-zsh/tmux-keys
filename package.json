@@ -1,0 +1,24 @@
+{
+  "name": "zpm-zsh---f-shortcuts",
+  "version": "1.0.0",
+  "description": "Make shortcut toolbar for F1-F12 keys.",
+  "main": "generate.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zpm-zsh/f-shortcuts.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zpm-zsh/f-shortcuts/issues"
+  },
+  "homepage": "https://github.com/zpm-zsh/f-shortcuts#readme",
+  "dependencies": {
+    "yaml": "^1.10.2"
+  }
+}

@@ -1,22 +1,20 @@
-refresh_keys () {
-  BUFFER=''
-  zle accept-line
+# refresh_keys () {
+#   BUFFER=''
+#   zle accept-line
+# }
+
+# zle -N refresh_keys
+
+function get_color() {
+  echo -n "#[bg=colour${1},fg=colour0,bold]"
 }
 
-zle -N refresh_keys
-
 function prefix_keys() {
-  pr_shortkeys=(" -- %{$fg_bold[cyan]%}$state_name%{$reset_color%}")
+  pr_shortkeys=('')
 }
 
 function suffix_keys() {
-  pr_shortkeys+=(" --")
-}
-
-function unbind_keys() {
-  for key in "$keys[@]"; do
-    bindkey -s "$key" ''
-  done
+  pr_shortkeys+=("#[bg=colour8,fg=colour7,bold] ${state_name} #[fg=default,bg=default]")
 }
 
 function set_state() {
@@ -28,13 +26,25 @@ function set_state_name() {
 }
 
 function create_key() {
-  pr_shortkeys+=("%{$fg_bold[blue]%}F${1}%{$fg_bold[yellow]%}:%{$fg_bold[green]%}${2}%{$reset_color%}")
-  
+  pr_shortkeys+=("$(get_color $1) F$((${1}+4)):${2} #[fg=default,bg=default]")
+
   if [ "$4" = "-s" ]; then
     bindkey -s $keys[$1] "$3 \n"
-  else
-    bindkey  $keys[$1] "$3"
+  elif [ "$4" = "-v" ]; then
+    bindkey $keys[$1] "$3"
+  elif [ "$4" = "-t" ]; then
+    bindkey -s $keys[$1] "$3"
   fi
 }
 
-keys=('^[OP' '^[OQ' '^[OR' '^[OS' '^[[15~' '^[[17~' '^[[18~' '^[[19~' '^[[20~' '^[[21~' '^[[23~' '^[[24~')
+function write_to_file() {
+  echo "$pr_shortkeys" >! "${TMPDIR:-/tmp}/zsh-${UID}/tmux-keys-generated.log"
+}
+
+function unbind_keys() {
+  for key in "$keys[@]"; do
+    bindkey -s "$key" ''
+  done
+}
+
+keys=( '^[[15~' '^[[17~' '^[[18~' '^[[19~' '^[[20~' '^[[21~' '^[[23~' '^[[24~')
