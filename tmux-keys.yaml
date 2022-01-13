@@ -1,0 +1,58 @@
+default_view: "Stats"
+views:
+  "Stats":
+    1:
+      text: Main view
+      view: "Main"
+    2:
+      text_exec: _tmux_prompt full
+      command: true
+    3:
+      text_exec: '_tmux_myip'
+      command: ip addr
+    4:
+      text_exec: _tmux_uname
+      command: uname -a;  lsb_release -a
+  "Main":
+    1:
+      text: Git functions
+      view: "Git functions"
+    2:
+      text: NPM functions
+      view: "NPM functions"
+    3:
+      text: ZPM functions
+      view: "ZPM functions"
+    4:
+      text: Stats
+      view: "Stats"
+  "Git functions":
+    1:
+      text: Main view
+      view: "Main"
+    2:
+      text: Git Status
+      command: "git status"
+    3:
+      text: Git Branch
+      command: git branch
+  "NPM functions":
+    1:
+      text: Main view
+      view: "Main"
+    2:
+      text: NPM list
+      command: "npm ls"
+    3:
+      text: NPM Install
+      template: 'npm i '
+  "ZPM functions":
+    1:
+      text: Main view
+      view: "Main"
+    2:
+      text: Upgrade Plugins
+      command: "zpm upgrade"
+    3:
+      text: Clean Cache
+      command: 'zpm clean'
