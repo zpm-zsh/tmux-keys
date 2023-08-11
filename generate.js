@@ -100,7 +100,7 @@ function create_key() {
   elif [ "$4" = "-v" ]; then
     tmux bind-key -n "F\${1}" run-shell "zsh ${
       process.env.TMPDIR || "/tmp"
-    }/zsh-${process.env.UID}/tmux-keys.zsh '$3'"
+    }/zsh-${uid}/tmux-keys.zsh '$3'"
   elif [ "$4" = "-b" ]; then
     tmux bind-key -n F\${1} "$3"
   fi
