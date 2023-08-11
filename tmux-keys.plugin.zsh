@@ -10,16 +10,15 @@ _DIRNAME="${0:h}"
 
 STAT_CACHE_FILE="${TMPDIR:-/tmp}/zsh-${UID}/tmux-keys.zsh"
 
-source "${_DIRNAME}/functions.zsh"
-
-
 if [[ "$STAT_CACHE_FILE" -nt "${HOME}/.tmux-keys.yaml" ]]; then
   source "$STAT_CACHE_FILE"
 else
+  mkdir -p "${TMPDIR:-/tmp}/zsh-${UID}"
+
   if [ ! -e "${HOME}/.tmux-keys.yaml" ]; then
     cp "${_DIRNAME}/tmux-keys.example.yaml" "${HOME}/.tmux-keys.yaml"
   fi
 
-  UID="${UID}" node "${_DIRNAME}/generate.js"
+  UID="${UID}" node "${_DIRNAME}/generate.js" || cp "${_DIRNAME}/tmux-keys.example.zsh" "${STAT_CACHE_FILE}"
   source "${STAT_CACHE_FILE}"
 fi

@@ -2,7 +2,7 @@ default_view: "Stats"
 views:
   "Stats":
     1:
-      text: Main view
+      text: Main view uuu
       view: "Main"
     2:
       text_exec: _tmux_prompt full
@@ -28,8 +28,8 @@ views:
       view: "Stats"
   "Git functions":
     1:
-      text: Main view
-      view: "Main"
+      text: NPM functions
+      view: "NPM functions"
     2:
       text: Git Status
       command: "git status"
@@ -38,8 +38,8 @@ views:
       command: git branch
   "NPM functions":
     1:
-      text: Main view
-      view: "Main"
+      text: ZPM functions
+      view: "ZPM functions"
     2:
       text: NPM list
       command: "npm ls"
@@ -48,8 +48,8 @@ views:
       template: 'npm i '
   "ZPM functions":
     1:
-      text: Main view
-      view: "Main"
+      text: Stats
+      view: "Stats"
     2:
       text: Upgrade Plugins
       command: "zpm upgrade"
