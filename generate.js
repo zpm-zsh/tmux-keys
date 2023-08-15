@@ -44,6 +44,8 @@ ${md5(view)}_view() {
   unbind_keys
 ${Object.entries(value)
   .map(([key, command]) => {
+
+    console.log(key, command);
     const key_string = `
   create_key ${key} "${
       command.text_exec ? `$(${command.text_exec})` : command.text
@@ -56,9 +58,9 @@ ${Object.entries(value)
         ? `'${command.tmux_command}' '-b'`
         : `'${command.template}' '-t'`
     }
-  left_status+="#[bg=colour${
-    command.color ? colorMap[command.color] : getRandomColor()
-  },fg=colour0,bold] ${
+  left_status+="#[bg=colour8,fg=colour15,bold] ${key} #[bg=colour${
+      command.color ? colorMap[command.color] : getRandomColor()
+    },fg=colour0,bold] ${
       command.text_exec ? `$(${command.text_exec})` : command.text
     } #[fg=default,bg=default]"
 `;
