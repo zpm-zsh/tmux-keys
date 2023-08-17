@@ -45,7 +45,6 @@ ${md5(view)}_view() {
 ${Object.entries(value)
   .map(([key, command]) => {
 
-    console.log(key, command);
     const key_string = `
   create_key ${key} "${
       command.text_exec ? `$(${command.text_exec})` : command.text
