@@ -2,112 +2,142 @@ default_view: "Main"
 views:
   "Main":
     1:
-      text: '←'
-      tmux_command: previous-window
+      title: '←'
+      type: tmux
+      command: previous-window
       color: green
     2:
-      text: '→'
-      tmux_command: next-window
+      title: '→'
+      type: tmux
+      command: next-window
       color: green
     3:
-      text_exec: _tmux_uname
+      title_exec: _tmux_uname
+      type: exec
       command: "neofetch"
       color: yellow
     4:
-      text_exec: _tmux_myip
+      title_exec: _tmux_myip
+      type: exec
       command: ip addr
       color: red
     5:
-      text: Menu
-      view: Menu
+      title: Menu
+      type: view
+      command: Menu
       color: blue
 
   "Menu":
     1:
-      text: Git
-      view: "Git"
+      title: Git
+      type: view
+      command: "Git"
     2:
-      text: Python
-      view: "Python"
+      title: Python
+      type: view
+      command: "Python"
     3:
-      text: NPM
-      view: "NPM"
+      title: NPM
+      type: view
+      command: "NPM"
     4:
-      text: ZPM
-      view: "ZPM"
+      title: ZPM
+      type: view
+      command: "ZPM"
     5:
-      text: Main
-      view: "Main"
+      title: Main
+      type: view
+      command: "Main"
       color: green
 
   "Git":
     1:
-      text: Menu
-      view: "Menu"
+      title: Menu
+      type: view
+      command: "Menu"
     2:
-      text: Git Status
+      title: Git Status
+      type: exec
       command: "git status"
     3:
-      text: Git Branch
+      title: Git Branch
+      type: exec
       command: git branch
     4:
-      text: Menu
-      view: "Menu"
+      title: Menu
+      type: view
+      command: "Menu"
     5:
-      text: Main
-      view: "Main"
+      title: Main
+      type: view
+      command: "Main"
       color: green
 
   "Python":
     1:
-      text: Menu
-      view: "Menu"
+      title: Menu
+      type: view
+      command: "Menu"
     2:
-      text: Python list
+      title: Python list
+      type: exec
       command: "npm ls"
     3:
       text: Python Install
-      template: 'npm i '
+      type: insert
+      command: 'npm i '
     4:
-      text: Python
-      view: "Python"
+      title: Python
+      type: view
+      command: "Python"
     5:
-      text: Main
-      view: "Main"
+      title: Main
+      type: view
+      command: "Main"
       color: green
 
   "NPM":
     1:
-      text: Menu
-      view: "Menu"
+      title: Menu
+      type: view
+      command: "Menu"
     2:
-      text: NPM list
+      title: NPM list
+      type: exec
       command: "npm ls"
     3:
-      text: NPM Install
-      template: 'npm i '
+      title: NPM Install
+      type: insert
+      command: 'npm i '
     4:
-      text: Main
-      view: "Main"
+      title: Main
+      type: view
+      command: "Main"
     5:
-      text: Main
-      view: "Main"
+      title: Main
+      type: view
+      command: "Main"
       color: green
 
   "ZPM":
     1:
-      text: Menu
-      view: "Menu"
+      title: Menu
+      type: view
+      command: "Menu"
     2:
-      text: Upgrade Plugins
+      title: Upgrade Plugins
+      type: exec
       command: "zpm upgrade"
     3:
-      text: Clean Cache
+      title: Clean Cache
+      type: exec
       command: "zpm clean"
     4:
-      text: Readme
-      template: "zpm readme"
+      title: Readme
+      type: insert
+      command: "zpm readme"
     5:
-      text: Main
-      view: "Main"
+      title: Main
+      type: view
+      command: "Main"
       color: green

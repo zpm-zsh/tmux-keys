@@ -44,23 +44,22 @@ ${md5(view)}_view() {
   unbind_keys
 ${Object.entries(value)
   .map(([key, command]) => {
-
     const key_string = `
   create_key ${key} "${
-      command.text_exec ? `$(${command.text_exec})` : command.text
+      command.title_exec ? `$(${command.title_exec})` : command.title
     }" ${
-      command.view
-        ? `'${md5(command.view)}_view' '-v'`
-        : command.command
-        ? `'${command.command}' '-s'`
-        : command.tmux_command
-        ? `'${command.tmux_command}' '-b'`
-        : `'${command.template}' '-t'`
+      command.type === "view"
+        ? `'${md5(command.command)}_view' 'view'`
+        : command.type === "exec"
+        ? `'${command.command}' 'exec'`
+        : command.type === "tmux"
+        ? `'${command.command}' 'tmux'`
+        : `'${command.command}' 'insert'`
     }
   left_status+="#[bg=colour8,fg=colour15,bold] ${key} #[bg=colour${
       command.color ? colorMap[command.color] : getRandomColor()
     },fg=colour0,bold] ${
-      command.text_exec ? `$(${command.text_exec})` : command.text
+      command.title_exec ? `$(${command.title_exec})` : command.title
     } #[fg=default,bg=default]"
 `;
 
@@ -93,14 +92,14 @@ function unbind_keys() {
 }
 
 function create_key() {
-  if [ "$4" = "-s" ]; then
+  if [ "$4" = "exec" ]; then
     tmux bind-key -n F\${1} send-keys $keys[$1] "$3
-"
-  elif [ "$4" = "-t" ]; then
+  "
+  elif [ "$4" = "insert" ]; then
     tmux bind-key -n F\${1} send-keys $keys[$1] "$3"
-  elif [ "$4" = "-v" ]; then
+  elif [ "$4" = "view" ]; then
     tmux bind-key -n "F\${1}" run-shell "zsh \${TMPDIR:-/tmp}/zsh-\${UID}/tmux-keys.zsh '$3'"
-  elif [ "$4" = "-b" ]; then
+  elif [ "$4" = "tmux" ]; then
     tmux bind-key -n F\${1} "$3"
   fi
 }
