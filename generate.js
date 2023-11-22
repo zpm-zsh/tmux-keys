@@ -44,6 +44,7 @@ ${md5(view)}_view() {
   unbind_keys
 ${Object.entries(value)
   .map(([key, command]) => {
+	  const color = command.color ? colorMap[command.color] : getRandomColor();
     const key_string = `
   create_key ${key} "${
       command.title_exec ? `$(${command.title_exec})` : command.title
@@ -55,9 +56,9 @@ ${Object.entries(value)
         : command.type === "tmux"
         ? `'${command.command}' 'tmux'`
         : `'${command.command}' 'insert'`
-    }
+    } ${color}
   left_status+="#[bg=colour8,fg=colour15,bold] ${key} #[bg=colour${
-      command.color ? colorMap[command.color] : getRandomColor()
+      color
     },fg=colour0,bold] ${
       command.title_exec ? `$(${command.title_exec})` : command.title
     } #[fg=default,bg=default]"
@@ -93,14 +94,14 @@ function unbind_keys() {
 
 function create_key() {
   if [ "$4" = "exec" ]; then
-    tmux bind-key -n F\${1} send-keys $keys[$1] "$3
-  "
+    tmux bind-key -n F\${1} display -d 200 "#[fill=color0 bg=colour\${5} align=centre] \${2} "\\\\\\\; send-keys $keys[$1] "$3
+"
   elif [ "$4" = "insert" ]; then
-    tmux bind-key -n F\${1} send-keys $keys[$1] "$3"
+    tmux bind-key -n F\${1} display -d 200 "#[fill=colour0 bg=colour\${5} align=centre] \${2} "\\\\\\\; send-keys $keys[$1] "$3"
   elif [ "$4" = "view" ]; then
-    tmux bind-key -n "F\${1}" run-shell "zsh \${TMPDIR:-/tmp}/zsh-\${UID}/tmux-keys.zsh '$3'"
+    tmux bind-key -n F\${1} display -d 200 "#[fill=colour0 bg=colour\${5} align=centre] \${2} "\\\\\\\; run-shell "zsh \${TMPDIR:-/tmp}/zsh-\${UID}/tmux-keys.zsh '$3'"
   elif [ "$4" = "tmux" ]; then
-    tmux bind-key -n F\${1} "$3"
+    tmux bind-key -n F\${1} display -d 200 "#[fill=colour0 bg=colour\${5} align=centre] \${2} "\\\\\\\; "$3"
   fi
 }
 
