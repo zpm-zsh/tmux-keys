@@ -6,14 +6,16 @@ views:
       type: tmux
       command: previous-window
       color: green
+      flash: false
     2:
       title: '→'
       type: tmux
       command: next-window
       color: green
+      flash: false
     3:
       title_exec: _tmux_uname
-      type: exec
+      type: insert
       command: "neofetch"
       color: yellow
     4:
