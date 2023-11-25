@@ -1,131 +1,87 @@
 default_view: "Main"
 views:
   "Main":
-    1:
+    -
       title: '←'
       type: tmux
       command: previous-window
       color: green
       flash: false
-    2:
+    -
       title: '→'
       type: tmux
       command: next-window
       color: green
       flash: false
-    3:
-      title_exec: _tmux_uname
-      type: insert
-      command: "neofetch"
+    -
+      type: view
+      command: System
+      color: violet
+    -
+      type: view
+      command: Git
+      color: chartreuse
+    -
+      type: view
+      command: Python
+      color: rose
+    -
+      type: view
+      command: ZPM
       color: yellow
-    4:
-      title_exec: _tmux_myip
-      type: exec
-      command: ip addr
-      color: red
-    5:
-      title: Menu
-      type: view
-      command: Menu
-      color: blue
 
-  "Menu":
-    1:
-      title: Git
-      type: view
-      command: "Git"
-    2:
-      title: Python
-      type: view
-      command: "Python"
-    3:
-      title: NPM
-      type: view
-      command: "NPM"
-    4:
-      title: ZPM
-      type: view
-      command: "ZPM"
-    5:
-      title: Main
-      type: view
-      command: "Main"
-      color: green
+
 
   "Git":
-    1:
-      title: Menu
+    -
       type: view
-      command: "Menu"
-    2:
+      command: Main
+    -
       title: Git Status
       type: exec
       command: "git status"
-    3:
+    -
       title: Git Branch
       type: exec
       command: git branch
-    4:
-      title: Menu
-      type: view
-      command: "Menu"
-    5:
-      title: Main
-      type: view
-      command: "Main"
-      color: green
+
+
 
   "Python":
-    1:
-      title: Menu
+    -
       type: view
-      command: "Menu"
-    2:
-      title: Python list
-      type: exec
-      command: "npm ls"
-    3:
+      command: Main
+    -
       text: Python Install
       type: insert
-      command: 'npm i '
-    4:
+      command: 'pip install '
+    -
       title: Python
       type: view
-      command: "Python"
-    5:
-      title: Main
-      type: view
-      command: "Main"
-      color: green
+      command: "python"
+
 
   "NPM":
-    1:
-      title: Menu
+    -
       type: view
-      command: "Menu"
-    2:
+      command: Main
+    -
       title: NPM list
       type: exec
       command: "npm ls"
-    3:
+    -
       title: NPM Install
       type: insert
       command: 'npm i '
-    4:
+    -
       title: Main
       type: view
       command: "Main"
-    5:
-      title: Main
-      type: view
-      command: "Main"
-      color: green
 
-  "ZPM":
+  ZPM:
     1:
-      title: Menu
       type: view
-      command: "Menu"
+      command: Main
     2:
       title: Upgrade Plugins
       type: exec
@@ -138,8 +94,23 @@ views:
       title: Readme
       type: insert
       command: "zpm readme"
-    5:
-      title: Main
+
+  System:
+    -
       type: view
-      command: "Main"
-      color: green
+      command: Main
+    -
+      title_exec: _tmux_uname
+      type: exec
+      command: "neofetch"
+      color: yellow
+    -
+      title_exec: _tmux_myip
+      type: insert
+      command: ip addr
+      color: red
+    -
+      title: Menu
+      type: view
+      command: Menu
+      color: blue

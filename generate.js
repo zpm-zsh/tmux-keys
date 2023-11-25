@@ -38,7 +38,6 @@ const generateCacheFile = async () => {
 
   const config = YAML.parse(yaml);
 
-
   const viewsFunctions = Object.entries(config.views).map(([view, value]) => {
     let subfn = `
 ${md5(view)}_view() {
@@ -47,8 +46,11 @@ ${Object.entries(value)
   .map(([key, command]) => {
     const color = command.color ? colorMap[command.color] : getRandomColor();
     const key_string = `
-  create_key ${key} "${
-      command.title_exec ? `$(${command.title_exec})` : command.title
+  create_key ${+key + 1} "${command.title_exec
+        ? `$(${command.title_exec})`
+        : command.title
+          ? command.title
+          : command.command
     }" ${
       command.type === "view"
         ? `'${md5(command.command)}_view' 'view'`
@@ -57,9 +59,13 @@ ${Object.entries(value)
         : command.type === "tmux"
         ? `'${command.command}' 'tmux'`
         : `'${command.command}' 'insert'`
-      } ${color} ${command.flash === false ? 'false' : 'true'}
-  left_status+="#[bg=colour8,fg=colour15,bold] ${key} #[bg=colour${color},fg=colour0,bold] ${
-      command.title_exec ? `$(${command.title_exec})` : command.title
+      } ${color} ${(command.flash === false || command.type === 'view') ? "false" : "true"}
+  left_status+="#[bg=colour8,fg=colour15,bold] ${+key + 1
+      } #[bg=colour${color},fg=colour0,bold] ${command.title_exec
+        ? `$(${command.title_exec})`
+        : command.title
+          ? command.title
+          : command.command
     } #[fg=default,bg=default]"
 `;
 

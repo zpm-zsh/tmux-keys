@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/zpm-zsh/f-shortcuts#readme",
   "dependencies": {
+    "ls": "^0.2.1",
+    "npm": "^10.2.4",
     "yaml": "^1.10.2"
   }
 }
