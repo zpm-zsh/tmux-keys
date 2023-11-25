@@ -39,10 +39,7 @@ const generateCacheFile = async () => {
   const config = YAML.parse(yaml);
 
   const viewsFunctions = Object.entries(config.views).map(([view, value]) => {
-
-    console.log('----    ', view, value)
-
-    const prepareKey = key => Array.isArray(value) ? +key + 1 : +key;
+    const prepareKey = (key) => (Array.isArray(value) ? +key + 1 : +key);
 
     let subfn = `
 ${md5(view)}_view() {
@@ -51,26 +48,33 @@ ${Object.entries(value)
   .map(([key, command]) => {
     const color = command.color ? colorMap[command.color] : getRandomColor();
     const key_string = `
-  create_key ${prepareKey(key)} "${command.title_exec
+  create_key ${prepareKey(key)} "${
+      command.title_exec
         ? `$(${command.title_exec})`
         : command.title
-          ? command.title
-          : command.command
+        ? command.title
+        : command.command
     }" ${
       command.type === "view"
         ? `'${md5(command.command)}_view' 'view'`
         : command.type === "exec"
         ? `'${command.command}' 'exec'`
+        : command.type === "insert"
+        ? `'${command.command}' 'insert'`
         : command.type === "tmux"
         ? `'${command.command}' 'tmux'`
-        : `'${command.command}' 'insert'`
-      } ${color} ${(command.flash === false || command.type === 'view') ? "false" : "true"}
-  left_status+="#[bg=colour8,fg=colour15,bold] ${prepareKey(key)
-      } #[bg=colour${color},fg=colour0,bold] ${command.title_exec
+        : `'${command.command}' 'popup'`
+    } ${color} ${
+      command.flash === false || command.type === "view" ? "false" : "true"
+    }
+  left_status+="#[bg=colour8,fg=colour15,bold] ${prepareKey(
+    key
+  )} #[bg=colour${color},fg=colour0,bold] ${
+      command.title_exec
         ? `$(${command.title_exec})`
         : command.title
-          ? command.title
-          : command.command
+        ? command.title
+        : command.command
     } #[fg=default,bg=default]"
 `;
 
@@ -110,12 +114,14 @@ function create_key() {
 
   tmux_command=''
 
-  if [ "$4" = "exec" ]; then
-    tmux_command="send-keys $keys[$1] '$3\n'"
+  if [ "$4" = "view" ]; then
+    tmux_command="run-shell 'zsh \${TMPDIR:-/tmp}/zsh-\${UID}/tmux-keys.zsh $3'"
   elif [ "$4" = "insert" ]; then
     tmux_command="send-keys $keys[$1] '$3'"
-  elif [ "$4" = "view" ]; then
-    tmux_command="run-shell 'zsh \${TMPDIR:-/tmp}/zsh-\${UID}/tmux-keys.zsh $3'"
+  elif [ "$4" = "exec" ]; then
+    tmux_command="send-keys $keys[$1] '$3\n'"
+  elif [ "$4" = "popup" ]; then
+    tmux_command="display-popup $3"
   elif [ "$4" = "tmux" ]; then
     tmux_command="$3"
   fi

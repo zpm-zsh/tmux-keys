@@ -97,12 +97,12 @@ views:
       command: Main
     -
       title_exec: _tmux_uname
-      type: exec
+      type: popup
       command: "neofetch"
       color: yellow
     -
       title_exec: _tmux_myip
-      type: insert
+      type: popup
       command: ip addr
       color: red
     -
