@@ -39,6 +39,11 @@ const generateCacheFile = async () => {
   const config = YAML.parse(yaml);
 
   const viewsFunctions = Object.entries(config.views).map(([view, value]) => {
+
+    console.log('----    ', view, value)
+
+    const prepareKey = key => Array.isArray(value) ? +key + 1 : +key;
+
     let subfn = `
 ${md5(view)}_view() {
   unbind_keys
@@ -46,7 +51,7 @@ ${Object.entries(value)
   .map(([key, command]) => {
     const color = command.color ? colorMap[command.color] : getRandomColor();
     const key_string = `
-  create_key ${+key + 1} "${command.title_exec
+  create_key ${prepareKey(key)} "${command.title_exec
         ? `$(${command.title_exec})`
         : command.title
           ? command.title
@@ -60,7 +65,7 @@ ${Object.entries(value)
         ? `'${command.command}' 'tmux'`
         : `'${command.command}' 'insert'`
       } ${color} ${(command.flash === false || command.type === 'view') ? "false" : "true"}
-  left_status+="#[bg=colour8,fg=colour15,bold] ${+key + 1
+  left_status+="#[bg=colour8,fg=colour15,bold] ${prepareKey(key)
       } #[bg=colour${color},fg=colour0,bold] ${command.title_exec
         ? `$(${command.title_exec})`
         : command.title

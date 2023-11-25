@@ -30,8 +30,6 @@ views:
       command: ZPM
       color: yellow
 
-
-
   "Git":
     -
       type: view
@@ -44,8 +42,6 @@ views:
       title: Git Branch
       type: exec
       command: git branch
-
-
 
   "Python":
     -
@@ -79,18 +75,18 @@ views:
       command: "Main"
 
   ZPM:
-    1:
+    -
       type: view
       command: Main
-    2:
+    -
       title: Upgrade Plugins
       type: exec
       command: "zpm upgrade"
-    3:
+    -
       title: Clean Cache
       type: exec
       command: "zpm clean"
-    4:
+    -
       title: Readme
       type: insert
       command: "zpm readme"
