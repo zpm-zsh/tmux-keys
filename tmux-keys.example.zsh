@@ -29,10 +29,9 @@ function create_key() {
   elif [ "$4" = "insert" ]; then
     tmux_command="send-keys $keys[$1] '$3'"
   elif [ "$4" = "exec" ]; then
-    tmux_command="send-keys $keys[$1] '$3
-'"
+    tmux_command="send-keys $keys[$1] '$3\n'"
   elif [ "$4" = "popup" ]; then
-    tmux_command="display-popup $3"
+    tmux_command="display-popup -w '80%' -h '80%' $3"
   elif [ "$4" = "tmux" ]; then
     tmux_command="$3"
   fi
@@ -48,7 +47,7 @@ function set_status() {
   tmux set -g status-right "$left_status"
 }
 
-  
+
 a02c83a7dbd96295beaefb72c2bee2de_view() {
   unbind_keys
 
@@ -72,7 +71,7 @@ a02c83a7dbd96295beaefb72c2bee2de_view() {
 
   set_status
 }
-    
+
 0bcc70105ad279503e31fe7b3f47b665_view() {
   unbind_keys
 
@@ -87,7 +86,7 @@ a02c83a7dbd96295beaefb72c2bee2de_view() {
 
   set_status
 }
-    
+
 a7f5f35426b927411fc9231b56382173_view() {
   unbind_keys
 
@@ -102,7 +101,7 @@ a7f5f35426b927411fc9231b56382173_view() {
 
   set_status
 }
-    
+
 00a5cdc4be82fd4ba549d52988ef9e14_view() {
   unbind_keys
 
@@ -120,7 +119,7 @@ a7f5f35426b927411fc9231b56382173_view() {
 
   set_status
 }
-    
+
 3517978753cf2043f2a652b3c9d7b524_view() {
   unbind_keys
 
@@ -138,7 +137,7 @@ a7f5f35426b927411fc9231b56382173_view() {
 
   set_status
 }
-    
+
 a45da96d0bf6575970f2d27af22be28a_view() {
   unbind_keys
 
@@ -156,7 +155,7 @@ a45da96d0bf6575970f2d27af22be28a_view() {
 
   set_status
 }
-    
+
 
 case $1 in
 		a02c83a7dbd96295beaefb72c2bee2de_view) a02c83a7dbd96295beaefb72c2bee2de_view ;;
@@ -167,5 +166,3 @@ case $1 in
 		a45da96d0bf6575970f2d27af22be28a_view) a45da96d0bf6575970f2d27af22be28a_view ;;
     *) a02c83a7dbd96295beaefb72c2bee2de_view
 esac
-
-  

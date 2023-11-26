@@ -121,7 +121,7 @@ function create_key() {
   elif [ "$4" = "exec" ]; then
     tmux_command="send-keys $keys[$1] '$3\n'"
   elif [ "$4" = "popup" ]; then
-    tmux_command="display-popup $3"
+    tmux_command="display-popup -w '80%' -h '80%' $3"
   elif [ "$4" = "tmux" ]; then
     tmux_command="$3"
   fi
