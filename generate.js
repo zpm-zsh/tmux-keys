@@ -45,36 +45,36 @@ const generateCacheFile = async () => {
 ${md5(view)}_view() {
   unbind_keys
 ${Object.entries(value)
-  .map(([key, command]) => {
-    const color = command.color ? colorMap[command.color] : getRandomColor();
+  .map(([key, action]) => {
+    const color = action.color ? colorMap[action.color] : getRandomColor();
     const key_string = `
   create_key ${prepareKey(key)} "${
-      command.title_exec
-        ? `$(${command.title_exec})`
-        : command.title
-        ? command.title
-        : command.command
+      action.title_exec
+        ? `$(${action.title_exec})`
+        : action.title
+        ? action.title
+        : action.action
     }" ${
-      command.type === "view"
-        ? `'${md5(command.command)}_view' 'view'`
-        : command.type === "exec"
-        ? `'${command.command}' 'exec'`
-        : command.type === "insert"
-        ? `'${command.command}' 'insert'`
-        : command.type === "tmux"
-        ? `'${command.command}' 'tmux'`
-        : `'${command.command}' 'popup'`
+      action.type === "view"
+        ? `'${md5(action.action)}_view' 'view'`
+        : action.type === "exec"
+        ? `'${action.action}' 'exec'`
+        : action.type === "insert"
+        ? `'${action.action}' 'insert'`
+        : action.type === "tmux"
+        ? `'${action.action}' 'tmux'`
+        : `'${action.action}' 'popup'`
     } ${color} ${
-      command.flash === false || command.type === "view" ? "false" : "true"
+      action.sh === false || action.type === "view" ? "false" : "true"
     }
   left_status+="#[bg=colour8,fg=colour15,bold] ${prepareKey(
     key
   )} #[bg=colour${color},fg=colour0,bold] ${
-      command.title_exec
-        ? `$(${command.title_exec})`
-        : command.title
-        ? command.title
-        : command.command
+      action.title_exec
+        ? `$(${action.title_exec})`
+        : action.title
+        ? action.title
+        : action.action
     } #[fg=default,bg=default]"
 `;
 
@@ -112,24 +112,24 @@ function create_key() {
     display_message="display -d 200 '#[fill=colour0 bg=colour\${5} align=centre] \${2} '"
   fi
 
-  tmux_command=''
+  tmux_action=''
 
   if [ "$4" = "view" ]; then
-    tmux_command="run-shell 'zsh \${TMPDIR:-/tmp}/zsh-\${UID}/tmux-keys.zsh $3'"
+    tmux_action="run-shell 'zsh \${TMPDIR:-/tmp}/zsh-\${UID}/tmux-keys.zsh $3'"
   elif [ "$4" = "insert" ]; then
-    tmux_command="send-keys $keys[$1] '$3'"
+    tmux_action="send-keys $keys[$1] '$3'"
   elif [ "$4" = "exec" ]; then
-    tmux_command="send-keys $keys[$1] '$3\n'"
+    tmux_action="send-keys $keys[$1] '$3\n'"
   elif [ "$4" = "popup" ]; then
-    tmux_command="display-popup -w '80%' -h '80%' $3"
+    tmux_action="display-popup -w '80%' -h '80%' $3"
   elif [ "$4" = "tmux" ]; then
-    tmux_command="$3"
+    tmux_action="$3"
   fi
 
   if [ "$display_message" = "" ]; then
-    tmux bind-key -n F\${1} "$tmux_command"
+    tmux bind-key -n F\${1} "$tmux_action"
   else
-    tmux bind-key -n F\${1} "$display_message ; $tmux_command"
+    tmux bind-key -n F\${1} "$display_message ; $tmux_action"
   fi
 }
 

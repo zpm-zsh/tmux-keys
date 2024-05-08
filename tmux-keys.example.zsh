@@ -22,24 +22,24 @@ function create_key() {
     display_message="display -d 200 '#[fill=colour0 bg=colour${5} align=centre] ${2} '"
   fi
 
-  tmux_command=''
+  tmux_action=''
 
   if [ "$4" = "view" ]; then
-    tmux_command="run-shell 'zsh ${TMPDIR:-/tmp}/zsh-${UID}/tmux-keys.zsh $3'"
+    tmux_action="run-shell 'zsh ${TMPDIR:-/tmp}/zsh-${UID}/tmux-keys.zsh $3'"
   elif [ "$4" = "insert" ]; then
-    tmux_command="send-keys $keys[$1] '$3'"
+    tmux_action="send-keys $keys[$1] '$3'"
   elif [ "$4" = "exec" ]; then
-    tmux_command="send-keys $keys[$1] '$3\n'"
+    tmux_action="send-keys $keys[$1] '$3\n'"
   elif [ "$4" = "popup" ]; then
-    tmux_command="display-popup -w '80%' -h '80%' $3"
+    tmux_action="display-popup -w '80%' -h '80%' $3"
   elif [ "$4" = "tmux" ]; then
-    tmux_command="$3"
+    tmux_action="$3"
   fi
 
   if [ "$display_message" = "" ]; then
-    tmux bind-key -n F${1} "$tmux_command"
+    tmux bind-key -n F${1} "$tmux_action"
   else
-    tmux bind-key -n F${1} "$display_message ; $tmux_command"
+    tmux bind-key -n F${1} "$display_message ; $tmux_action"
   fi
 }
 
