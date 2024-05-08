@@ -1,111 +1,88 @@
 default_view: "Main"
+
 views:
   "Main":
-    -
-      title: '←'
+    - title: "←"
       type: tmux
       action: previous-window
       color: green
       flash: false
-    -
-      title: '→'
+    - title: "→"
       type: tmux
       action: next-window
       color: green
       flash: false
-    -
-      type: view
+    - type: view
       action: System
       color: violet
-    -
-      type: view
+    - type: view
       action: Git
       color: chartreuse
-    -
-      type: view
+    - type: view
       action: Python
       color: rose
-    -
-      type: view
+    - type: view
       action: NPM
       color: magenta
-    -
-      type: view
+    - type: view
       action: ZPM
       color: yellow
 
   "Git":
-    -
-      type: view
+    - type: view
       action: Main
-    -
-      title: Git Status
+    - title: Git Status
       type: exec
       action: "git status"
-    -
-      title: Git Branch
+    - title: Git Branch
       type: exec
       action: git branch
 
   "Python":
-    -
-      type: view
+    - type: view
       action: Main
-    -
-      text: Python Install
+    - text: Python Install
       type: insert
-      action: 'pip install '
-    -
-      title: Python CLI
+      action: "pip install "
+    - title: Python CLI
       type: insert
       action: "python"
 
   "NPM":
-    -
-      type: view
+    - type: view
       action: Main
-    -
-      title: NPM list
+    - title: NPM list
       type: exec
       action: "npm ls"
-    -
-      title: NPM Install
+    - title: NPM Install
       type: insert
-      action: 'npm i '
-    -
-      title: Dev
+      action: "npm i "
+    - title: Dev
       type: insert
       action: "npm run dev"
       color: cyan
 
   ZPM:
-    -
-      type: view
+    - type: view
       action: Main
-    -
-      title: Upgrade Plugins
+    - title: Upgrade Plugins
       type: exec
       action: "zpm upgrade"
-    -
-      title: Clean Cache
+    - title: Clean Cache
       type: exec
       action: "zpm clean"
-    -
-      title: Readme
+    - title: Readme
       type: insert
       action: "zpm readme"
 
   System:
-    -
-      type: view
+    - type: view
       action: Main
-    -
-      title_exec: _tmux_uname
+    - title_exec: _tmux_uname
       type: popup
       action: "neofetch"
       color: yellow
-    -
-      title_exec: _tmux_myip
+    - title_exec: _tmux_myip
       type: popup
       action: ip addr
       color: red
