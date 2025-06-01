@@ -109,7 +109,7 @@ function unbind_keys() {
 function create_key() {
   display_message=''
   if [ "$6" = 'true' ]; then
-    display_message="display -d 200 '#[fill=colour0 bg=colour\${5} align=centre] \${2} '"
+    display_message="display -d 600 '#[fill=colour0 bg=colour\${5} align=centre] \${2} '"
   fi
 
   tmux_action=''
