@@ -67,7 +67,7 @@ ${Object.entries(value)
     } ${color} ${
       action.sh === false || action.type === "view" ? "false" : "true"
     }
-  left_status+="#[bg=colour8,fg=colour15,bold] ${prepareKey(
+  right_status+="#[bg=colour8,fg=colour15,bold] ${prepareKey(
     key
   )} #[bg=colour${color},fg=colour0,bold] ${
       action.title_exec
@@ -80,7 +80,7 @@ ${Object.entries(value)
 
     return key_string;
   })
-  .join(`  left_status+=' '`)}
+  .join(`  right_status+=' '`)}
   set_status
 }
     `;
@@ -89,7 +89,7 @@ ${Object.entries(value)
   });
 
   let script = `
-left_status=''
+right_status=' '
 
 function unbind_keys() {
   tmux unbind-key -n F1
@@ -134,7 +134,7 @@ function create_key() {
 }
 
 function set_status() {
-  tmux set -g status-right "$left_status"
+  tmux set -g status-right "$right_status"
 }
 
   ${viewsFunctions.join("")}
