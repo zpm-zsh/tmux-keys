@@ -19,6 +19,6 @@ else
     cp "${_DIRNAME}/tmux-keys.example.yaml" "${HOME}/.tmux-keys.yaml"
   fi
 
-  UID="${UID}" node "${_DIRNAME}/generate.js" || cp "${_DIRNAME}/tmux-keys.example.zsh" "${STAT_CACHE_FILE}"
+  python3 "${_DIRNAME}/generate.py" || cp "${_DIRNAME}/tmux-keys.example.zsh" "${STAT_CACHE_FILE}"
   source "${STAT_CACHE_FILE}"
 fi
