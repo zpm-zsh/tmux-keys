@@ -1,3 +1,0 @@
-#!/usr/bin/env zsh
-
-cat "${TMPDIR:-/tmp}/zsh-${UID}/tmux-keys-generated.log"

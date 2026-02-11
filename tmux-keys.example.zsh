@@ -29,9 +29,9 @@ function create_key() {
   elif [ "$4" = "insert" ]; then
     tmux_action="send-keys $keys[$1] '$3'"
   elif [ "$4" = "exec" ]; then
-    tmux_action="send-keys $keys[$1] '$3\n'"
+    tmux_action="send-keys $keys[$1] '$3' C-m"
   elif [ "$4" = "popup" ]; then
-    tmux_action="display-popup -w '80%' -h '80%' $3"
+    tmux_action="display-popup -d '#{pane_current_path}' -w '80%' -h '80%' $3"
   elif [ "$4" = "tmux" ]; then
     tmux_action="$3"
   fi
@@ -66,8 +66,17 @@ a02c83a7dbd96295beaefb72c2bee2de_view() {
   create_key 5 "Python" 'a7f5f35426b927411fc9231b56382173_view' 'view' 9 false
   left_status+="#[bg=colour8,fg=colour15,bold] 5 #[bg=colour9,fg=colour0,bold] Python #[fg=default,bg=default]"
   left_status+=' '
-  create_key 6 "ZPM" '3517978753cf2043f2a652b3c9d7b524_view' 'view' 3 false
-  left_status+="#[bg=colour8,fg=colour15,bold] 6 #[bg=colour3,fg=colour0,bold] ZPM #[fg=default,bg=default]"
+  create_key 6 "NPM" '00a5cdc4be82fd4ba549d52988ef9e14_view' 'view' 5 false
+  left_status+="#[bg=colour8,fg=colour15,bold] 6 #[bg=colour5,fg=colour0,bold] NPM #[fg=default,bg=default]"
+  left_status+=' '
+  create_key 7 "ZPM" '3517978753cf2043f2a652b3c9d7b524_view' 'view' 3 false
+  left_status+="#[bg=colour8,fg=colour15,bold] 7 #[bg=colour3,fg=colour0,bold] ZPM #[fg=default,bg=default]"
+  left_status+=' '
+  create_key 8 "Docker" 'c5fd214cdd0d2b3b4272e73b022ba5c2_view' 'view' 14 false
+  left_status+="#[bg=colour8,fg=colour15,bold] 8 #[bg=colour14,fg=colour0,bold] Docker #[fg=default,bg=default]"
+  left_status+=' '
+  create_key 9 "Ops" '526bb9ac8b1b62d0e97d02ee2ff71de0_view' 'view' 1 false
+  left_status+="#[bg=colour8,fg=colour15,bold] 9 #[bg=colour1,fg=colour0,bold] Ops #[fg=default,bg=default]"
 
   set_status
 }
@@ -75,13 +84,13 @@ a02c83a7dbd96295beaefb72c2bee2de_view() {
 0bcc70105ad279503e31fe7b3f47b665_view() {
   unbind_keys
 
-  create_key 1 "Main" 'a02c83a7dbd96295beaefb72c2bee2de_view' 'view' 14 false
-  left_status+="#[bg=colour8,fg=colour15,bold] 1 #[bg=colour14,fg=colour0,bold] Main #[fg=default,bg=default]"
+  create_key 1 "Main" 'a02c83a7dbd96295beaefb72c2bee2de_view' 'view' 12 false
+  left_status+="#[bg=colour8,fg=colour15,bold] 1 #[bg=colour12,fg=colour0,bold] Main #[fg=default,bg=default]"
   left_status+=' '
-  create_key 2 "Git Status" 'git status' 'exec' 5 true
+  create_key 2 "Git Status" 'git status' 'popup' 5 true
   left_status+="#[bg=colour8,fg=colour15,bold] 2 #[bg=colour5,fg=colour0,bold] Git Status #[fg=default,bg=default]"
   left_status+=' '
-  create_key 3 "Git Branch" 'git branch' 'exec' 4 true
+  create_key 3 "Git Branch" 'git branch' 'popup' 4 true
   left_status+="#[bg=colour8,fg=colour15,bold] 3 #[bg=colour4,fg=colour0,bold] Git Branch #[fg=default,bg=default]"
 
   set_status
@@ -90,14 +99,14 @@ a02c83a7dbd96295beaefb72c2bee2de_view() {
 a7f5f35426b927411fc9231b56382173_view() {
   unbind_keys
 
-  create_key 1 "Main" 'a02c83a7dbd96295beaefb72c2bee2de_view' 'view' 5 false
-  left_status+="#[bg=colour8,fg=colour15,bold] 1 #[bg=colour5,fg=colour0,bold] Main #[fg=default,bg=default]"
+  create_key 1 "Main" 'a02c83a7dbd96295beaefb72c2bee2de_view' 'view' 12 false
+  left_status+="#[bg=colour8,fg=colour15,bold] 1 #[bg=colour12,fg=colour0,bold] Main #[fg=default,bg=default]"
   left_status+=' '
-  create_key 2 "pip install " 'pip install ' 'insert' 1 true
-  left_status+="#[bg=colour8,fg=colour15,bold] 2 #[bg=colour1,fg=colour0,bold] pip install  #[fg=default,bg=default]"
+  create_key 2 "pip install" 'pip install' 'popup' 1 true
+  left_status+="#[bg=colour8,fg=colour15,bold] 2 #[bg=colour1,fg=colour0,bold] pip install #[fg=default,bg=default]"
   left_status+=' '
-  create_key 3 "Python" '23eeeb4347bdd26bfc6b7ee9a3b755dd_view' 'view' 6 false
-  left_status+="#[bg=colour8,fg=colour15,bold] 3 #[bg=colour6,fg=colour0,bold] Python #[fg=default,bg=default]"
+  create_key 3 "Python CLI" 'python' 'exec' 6 true
+  left_status+="#[bg=colour8,fg=colour15,bold] 3 #[bg=colour6,fg=colour0,bold] Python CLI #[fg=default,bg=default]"
 
   set_status
 }
@@ -105,17 +114,17 @@ a7f5f35426b927411fc9231b56382173_view() {
 00a5cdc4be82fd4ba549d52988ef9e14_view() {
   unbind_keys
 
-  create_key 1 "Main" 'a02c83a7dbd96295beaefb72c2bee2de_view' 'view' 9 false
-  left_status+="#[bg=colour8,fg=colour15,bold] 1 #[bg=colour9,fg=colour0,bold] Main #[fg=default,bg=default]"
+  create_key 1 "Main" 'a02c83a7dbd96295beaefb72c2bee2de_view' 'view' 12 false
+  left_status+="#[bg=colour8,fg=colour15,bold] 1 #[bg=colour12,fg=colour0,bold] Main #[fg=default,bg=default]"
   left_status+=' '
-  create_key 2 "NPM list" 'npm ls' 'exec' 5 true
+  create_key 2 "NPM list" 'npm ls' 'popup' 5 true
   left_status+="#[bg=colour8,fg=colour15,bold] 2 #[bg=colour5,fg=colour0,bold] NPM list #[fg=default,bg=default]"
   left_status+=' '
-  create_key 3 "NPM Install" 'npm i ' 'insert' 1 true
+  create_key 3 "NPM Install" 'npm i' 'popup' 1 true
   left_status+="#[bg=colour8,fg=colour15,bold] 3 #[bg=colour1,fg=colour0,bold] NPM Install #[fg=default,bg=default]"
   left_status+=' '
-  create_key 4 "Main" 'a02c83a7dbd96295beaefb72c2bee2de_view' 'view' 2 false
-  left_status+="#[bg=colour8,fg=colour15,bold] 4 #[bg=colour2,fg=colour0,bold] Main #[fg=default,bg=default]"
+  create_key 4 "Dev" 'npm run dev' 'popup' 6 true
+  left_status+="#[bg=colour8,fg=colour15,bold] 4 #[bg=colour6,fg=colour0,bold] Dev #[fg=default,bg=default]"
 
   set_status
 }
@@ -123,16 +132,16 @@ a7f5f35426b927411fc9231b56382173_view() {
 3517978753cf2043f2a652b3c9d7b524_view() {
   unbind_keys
 
-  create_key 1 "Main" 'a02c83a7dbd96295beaefb72c2bee2de_view' 'view' 11 false
-  left_status+="#[bg=colour8,fg=colour15,bold] 1 #[bg=colour11,fg=colour0,bold] Main #[fg=default,bg=default]"
+  create_key 1 "Main" 'a02c83a7dbd96295beaefb72c2bee2de_view' 'view' 12 false
+  left_status+="#[bg=colour8,fg=colour15,bold] 1 #[bg=colour12,fg=colour0,bold] Main #[fg=default,bg=default]"
   left_status+=' '
-  create_key 2 "Upgrade Plugins" 'zpm upgrade' 'exec' 10 true
+  create_key 2 "Upgrade Plugins" 'zpm upgrade' 'popup' 10 true
   left_status+="#[bg=colour8,fg=colour15,bold] 2 #[bg=colour10,fg=colour0,bold] Upgrade Plugins #[fg=default,bg=default]"
   left_status+=' '
-  create_key 3 "Clean Cache" 'zpm clean' 'exec' 5 true
+  create_key 3 "Clean Cache" 'zpm clean' 'popup' 5 true
   left_status+="#[bg=colour8,fg=colour15,bold] 3 #[bg=colour5,fg=colour0,bold] Clean Cache #[fg=default,bg=default]"
   left_status+=' '
-  create_key 4 "Readme" 'zpm readme' 'insert' 6 true
+  create_key 4 "Readme" 'zpm readme' 'popup' 6 true
   left_status+="#[bg=colour8,fg=colour15,bold] 4 #[bg=colour6,fg=colour0,bold] Readme #[fg=default,bg=default]"
 
   set_status
@@ -141,8 +150,8 @@ a7f5f35426b927411fc9231b56382173_view() {
 a45da96d0bf6575970f2d27af22be28a_view() {
   unbind_keys
 
-  create_key 1 "Main" 'a02c83a7dbd96295beaefb72c2bee2de_view' 'view' 9 false
-  left_status+="#[bg=colour8,fg=colour15,bold] 1 #[bg=colour9,fg=colour0,bold] Main #[fg=default,bg=default]"
+  create_key 1 "Main" 'a02c83a7dbd96295beaefb72c2bee2de_view' 'view' 12 false
+  left_status+="#[bg=colour8,fg=colour15,bold] 1 #[bg=colour12,fg=colour0,bold] Main #[fg=default,bg=default]"
   left_status+=' '
   create_key 2 "$(_tmux_uname)" 'neofetch' 'popup' 3 true
   left_status+="#[bg=colour8,fg=colour15,bold] 2 #[bg=colour3,fg=colour0,bold] $(_tmux_uname) #[fg=default,bg=default]"
@@ -156,6 +165,42 @@ a45da96d0bf6575970f2d27af22be28a_view() {
   set_status
 }
 
+c5fd214cdd0d2b3b4272e73b022ba5c2_view() {
+  unbind_keys
+
+  create_key 1 "Main" 'a02c83a7dbd96295beaefb72c2bee2de_view' 'view' 12 false
+  left_status+="#[bg=colour8,fg=colour15,bold] 1 #[bg=colour12,fg=colour0,bold] Main #[fg=default,bg=default]"
+  left_status+=' '
+  create_key 2 "Docker PS" 'docker ps' 'popup' 6 true
+  left_status+="#[bg=colour8,fg=colour15,bold] 2 #[bg=colour6,fg=colour0,bold] Docker PS #[fg=default,bg=default]"
+  left_status+=' '
+  create_key 3 "Docker Images" 'docker images' 'popup' 11 true
+  left_status+="#[bg=colour8,fg=colour15,bold] 3 #[bg=colour11,fg=colour0,bold] Docker Images #[fg=default,bg=default]"
+  left_status+=' '
+  create_key 4 "Compose Up" 'docker compose up' 'popup' 13 true
+  left_status+="#[bg=colour8,fg=colour15,bold] 4 #[bg=colour13,fg=colour0,bold] Compose Up #[fg=default,bg=default]"
+
+  set_status
+}
+
+526bb9ac8b1b62d0e97d02ee2ff71de0_view() {
+  unbind_keys
+
+  create_key 1 "Main" 'a02c83a7dbd96295beaefb72c2bee2de_view' 'view' 12 false
+  left_status+="#[bg=colour8,fg=colour15,bold] 1 #[bg=colour12,fg=colour0,bold] Main #[fg=default,bg=default]"
+  left_status+=' '
+  create_key 2 "Top" 'top' 'popup' 10 true
+  left_status+="#[bg=colour8,fg=colour15,bold] 2 #[bg=colour10,fg=colour0,bold] Top #[fg=default,bg=default]"
+  left_status+=' '
+  create_key 3 "Disk Usage" 'df -h' 'popup' 14 true
+  left_status+="#[bg=colour8,fg=colour15,bold] 3 #[bg=colour14,fg=colour0,bold] Disk Usage #[fg=default,bg=default]"
+  left_status+=' '
+  create_key 4 "Journalctl" 'journalctl -xe' 'popup' 5 true
+  left_status+="#[bg=colour8,fg=colour15,bold] 4 #[bg=colour5,fg=colour0,bold] Journalctl #[fg=default,bg=default]"
+
+  set_status
+}
+
 
 case $1 in
 		a02c83a7dbd96295beaefb72c2bee2de_view) a02c83a7dbd96295beaefb72c2bee2de_view ;;
@@ -164,5 +209,7 @@ case $1 in
 		00a5cdc4be82fd4ba549d52988ef9e14_view) 00a5cdc4be82fd4ba549d52988ef9e14_view ;;
 		3517978753cf2043f2a652b3c9d7b524_view) 3517978753cf2043f2a652b3c9d7b524_view ;;
 		a45da96d0bf6575970f2d27af22be28a_view) a45da96d0bf6575970f2d27af22be28a_view ;;
+		c5fd214cdd0d2b3b4272e73b022ba5c2_view) c5fd214cdd0d2b3b4272e73b022ba5c2_view ;;
+		526bb9ac8b1b62d0e97d02ee2ff71de0_view) 526bb9ac8b1b62d0e97d02ee2ff71de0_view ;;
     *) a02c83a7dbd96295beaefb72c2bee2de_view
 esac

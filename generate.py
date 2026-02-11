@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate tmux key bindings script from ~/.tmux-keys.yaml."""
+"""Generate tmux key bindings script from the first existing config candidate."""
 
 from __future__ import annotations
 
@@ -75,6 +75,27 @@ def load_config(config_path: Path) -> Mapping[str, Any]:
         raise SystemExit("Invalid configuration: `views` section is required and must be a mapping.")
 
     return config
+
+
+def resolve_config_path() -> Path:
+    """Resolve config path with priority: XDG, ~/.tmux, then legacy ~/.tmux-keys.yaml."""
+    config_override = os.environ.get("TMUX_KEYS_CONFIG")
+    if config_override:
+        return Path(config_override).expanduser()
+
+    home = Path.home()
+    xdg_home = Path(os.environ.get("XDG_CONFIG_HOME", str(home / ".config")))
+    candidates = (
+        xdg_home / "tmux" / "keys.yaml",
+        home / ".tmux" / "keys.yaml",
+        home / ".tmux-keys.yaml",
+    )
+
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate
+
+    return candidates[0]
 
 
 def iter_view_entries(entries: Any) -> Iterable[tuple[int, Mapping[str, Any]]]:
@@ -204,9 +225,9 @@ def render_script(config: Mapping[str, Any]) -> str:
         "  elif [ \"$4\" = \"insert\" ]; then\n"
         "    tmux_action=\"send-keys $keys[$1] '$3'\"\n"
         "  elif [ \"$4\" = \"exec\" ]; then\n"
-        "    tmux_action=\"send-keys $keys[$1] '$3\\n'\"\n"
+        "    tmux_action=\"send-keys $keys[$1] '$3' C-m\"\n"
         "  elif [ \"$4\" = \"popup\" ]; then\n"
-        "    tmux_action=\"display-popup -w '80%' -h '80%' $3\"\n"
+        "    tmux_action=\"display-popup -d '#{pane_current_path}' -w '80%' -h '80%' $3\"\n"
         "  elif [ \"$4\" = \"tmux\" ]; then\n"
         "    tmux_action=\"$3\"\n"
         "  fi\n\n"
@@ -228,7 +249,7 @@ def render_script(config: Mapping[str, Any]) -> str:
 
 
 def main() -> None:
-    config_path = Path.home() / ".tmux-keys.yaml"
+    config_path = resolve_config_path()
     config = load_config(config_path)
     script_body = render_script(config)
 

@@ -35,7 +35,8 @@ git clone https://github.com/zpm-zsh/tmux-keys
 
 ### Automatic
 
-You can define simple commands for FN keys in `~/.tmux-keys.yaml` file.
+You can define simple commands for FN keys in one of these files (first existing file wins):
+`$XDG_CONFIG_HOME/tmux/keys.yaml` (or `~/.config/tmux/keys.yaml`), `~/.tmux/keys.yaml`, `~/.tmux-keys.yaml`.
 
 #### Structure
 
@@ -82,57 +83,77 @@ views:
     - type: view
       action: ZPM
       color: yellow
+    - type: view
+      action: Docker
+      color: springgreen
+    - type: view
+      action: Ops
+      color: red
 
   "Git":
     - type: view
       action: Main
+      color: azure
     - title: Git Status
-      type: exec
+      type: popup
       action: "git status"
+      color: cyan
     - title: Git Branch
-      type: exec
+      type: popup
       action: git branch
+      color: blue
 
   "Python":
     - type: view
       action: Main
+      color: azure
     - text: Python Install
-      type: insert
-      action: "pip install "
+      type: popup
+      action: "pip install"
+      color: orange
     - title: Python CLI
-      type: insert
+      type: exec
       action: "python"
+      color: cyan
 
   "NPM":
     - type: view
       action: Main
+      color: azure
     - title: NPM list
-      type: exec
+      type: popup
       action: "npm ls"
+      color: chartreuse
     - title: NPM Install
-      type: insert
-      action: "npm i "
+      type: popup
+      action: "npm i"
+      color: springgreen
     - title: Dev
-      type: insert
+      type: popup
       action: "npm run dev"
       color: cyan
 
   ZPM:
     - type: view
       action: Main
+      color: azure
     - title: Upgrade Plugins
-      type: exec
+      type: popup
       action: "zpm upgrade"
+      color: orange
     - title: Clean Cache
-      type: exec
+      type: popup
       action: "zpm clean"
+      color: rose
     - title: Readme
-      type: insert
+      type: popup
       action: "zpm readme"
+      color: violet
 
   System:
     - type: view
       action: Main
+      color: azure
     - title_exec: _tmux_uname
       type: popup
       action: "neofetch"
@@ -141,6 +162,40 @@ views:
       type: popup
       action: ip addr
       color: red
+
+  Docker:
+    - type: view
+      action: Main
+      color: azure
+    - title: Docker PS
+      type: popup
+      action: "docker ps"
+      color: cyan
+    - title: Docker Images
+      type: popup
+      action: "docker images"
+      color: orange
+    - title: Compose Up
+      type: popup
+      action: "docker compose up"
+      color: violet
+
+  Ops:
+    - type: view
+      action: Main
+      color: azure
+    - title: Top
+      type: popup
+      action: "top"
+      color: chartreuse
+    - title: Disk Usage
+      type: popup
+      action: "df -h"
+      color: springgreen
+    - title: Journalctl
+      type: popup
+      action: "journalctl -xe"
+      color: magenta
 ```
 
 # TODO

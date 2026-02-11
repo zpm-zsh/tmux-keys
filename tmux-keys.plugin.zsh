@@ -9,16 +9,30 @@ fi
 _DIRNAME="${0:h}"
 
 STAT_CACHE_FILE="${TMPDIR:-/tmp}/zsh-${UID}/tmux-keys.zsh"
+CONFIG_CANDIDATES=(
+  "${XDG_CONFIG_HOME:-${HOME}/.config}/tmux/keys.yaml"
+  "${HOME}/.tmux/keys.yaml"
+  "${HOME}/.tmux-keys.yaml"
+)
+TMUX_KEYS_CONFIG=""
 
-if [[ "$STAT_CACHE_FILE" -nt "${HOME}/.tmux-keys.yaml" ]]; then
+for candidate in "${CONFIG_CANDIDATES[@]}"; do
+  if [[ -e "${candidate}" ]]; then
+    TMUX_KEYS_CONFIG="${candidate}"
+    break
+  fi
+done
+
+if [[ -z "${TMUX_KEYS_CONFIG}" ]]; then
+  TMUX_KEYS_CONFIG="${CONFIG_CANDIDATES[1]}"
+  mkdir -p "${TMUX_KEYS_CONFIG:h}"
+  cp "${_DIRNAME}/tmux-keys.example.yaml" "${TMUX_KEYS_CONFIG}"
+fi
+
+if [[ -f "$STAT_CACHE_FILE" && "$STAT_CACHE_FILE" -nt "${TMUX_KEYS_CONFIG}" && "$STAT_CACHE_FILE" -nt "${_DIRNAME}/generate.py" ]]; then
   source "$STAT_CACHE_FILE"
 else
   mkdir -p "${TMPDIR:-/tmp}/zsh-${UID}"
-
-  if [ ! -e "${HOME}/.tmux-keys.yaml" ]; then
-    cp "${_DIRNAME}/tmux-keys.example.yaml" "${HOME}/.tmux-keys.yaml"
-  fi
-
-  python3 "${_DIRNAME}/generate.py" || cp "${_DIRNAME}/tmux-keys.example.zsh" "${STAT_CACHE_FILE}"
+  TMUX_KEYS_CONFIG="${TMUX_KEYS_CONFIG}" python3 "${_DIRNAME}/generate.py" || cp "${_DIRNAME}/tmux-keys.example.zsh" "${STAT_CACHE_FILE}"
   source "${STAT_CACHE_FILE}"
 fi
