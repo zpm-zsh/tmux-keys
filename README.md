@@ -122,7 +122,7 @@ views:
       color: azure
     - title: NPM list
       type: popup
-      action: "npm ls"
+      action: "npm ls | less"
       color: chartreuse
     - title: NPM Install
       type: popup

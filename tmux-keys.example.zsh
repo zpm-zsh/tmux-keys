@@ -23,15 +23,16 @@ function create_key() {
   fi
 
   tmux_action=''
+  escaped_action=${3//\"/\\\"}
 
   if [ "$4" = "view" ]; then
     tmux_action="run-shell 'zsh ${TMPDIR:-/tmp}/zsh-${UID}/tmux-keys.zsh $3'"
   elif [ "$4" = "insert" ]; then
-    tmux_action="send-keys $keys[$1] '$3'"
+    tmux_action="send-keys $keys[$1] \"$escaped_action\""
   elif [ "$4" = "exec" ]; then
-    tmux_action="send-keys $keys[$1] '$3' C-m"
+    tmux_action="send-keys $keys[$1] \"$escaped_action\" C-m"
   elif [ "$4" = "popup" ]; then
-    tmux_action="display-popup -d '#{pane_current_path}' -w '80%' -h '80%' $3"
+    tmux_action="display-popup -d '#{pane_current_path}' -w '80%' -h '80%' -- \"$escaped_action\""
   elif [ "$4" = "tmux" ]; then
     tmux_action="$3"
   fi
@@ -117,7 +118,7 @@ a7f5f35426b927411fc9231b56382173_view() {
   create_key 1 "Main" 'a02c83a7dbd96295beaefb72c2bee2de_view' 'view' 12 false
   left_status+="#[bg=colour8,fg=colour15,bold] 1 #[bg=colour12,fg=colour0,bold] Main #[fg=default,bg=default]"
   left_status+=' '
-  create_key 2 "NPM list" 'npm ls' 'popup' 5 true
+  create_key 2 "NPM list" 'npm ls | less' 'popup' 5 true
   left_status+="#[bg=colour8,fg=colour15,bold] 2 #[bg=colour5,fg=colour0,bold] NPM list #[fg=default,bg=default]"
   left_status+=' '
   create_key 3 "NPM Install" 'npm i' 'popup' 1 true

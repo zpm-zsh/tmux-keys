@@ -60,6 +60,12 @@ def escape_double_quotes(value: str) -> str:
     return value.replace('"', r"\"")
 
 
+def quote_single(value: Any) -> str:
+    """Quote a value for safe inclusion in single-quoted shell literals."""
+    text = str(value)
+    return "'" + text.replace("'", r"'\''") + "'"
+
+
 def load_config(config_path: Path) -> Mapping[str, Any]:
     """Load and parse the YAML configuration file."""
     try:
@@ -130,11 +136,11 @@ def iter_view_entries(entries: Any) -> Iterable[tuple[int, Mapping[str, Any]]]:
 def render_action(index: int, action: Mapping[str, Any]) -> str:
     """Render a single `create_key`/status block."""
     tmux_index = index
-    title_expr = action.get("action", "")
+    title_expr = str(action.get("action", ""))
     if action.get("title_exec"):
         title_expr = f"$({action['title_exec']})"
     elif action.get("title"):
-        title_expr = action["title"]
+        title_expr = str(action["title"])
 
     color_name = action.get("color")
     color_value = COLOR_MAP.get(color_name) if color_name else None
@@ -142,18 +148,18 @@ def render_action(index: int, action: Mapping[str, Any]) -> str:
         color_value = get_random_color()
 
     action_type = action.get("type")
-    action_value = action.get("action", "")
+    action_value = str(action.get("action", ""))
 
     if action_type == "view":
-        action_target = f"'{md5(action_value)}_view' 'view'"
+        action_target = f"{quote_single(f'{md5(action_value)}_view')} 'view'"
     elif action_type == "exec":
-        action_target = f"'{action_value}' 'exec'"
+        action_target = f"{quote_single(action_value)} 'exec'"
     elif action_type == "insert":
-        action_target = f"'{action_value}' 'insert'"
+        action_target = f"{quote_single(action_value)} 'insert'"
     elif action_type == "tmux":
-        action_target = f"'{action_value}' 'tmux'"
+        action_target = f"{quote_single(action_value)} 'tmux'"
     else:
-        action_target = f"'{action_value}' 'popup'"
+        action_target = f"{quote_single(action_value)} 'popup'"
 
     should_flash = "false" if action_type == "view" or action.get("sh") is False else "true"
     escaped_title = escape_double_quotes(title_expr)
@@ -220,14 +226,15 @@ def render_script(config: Mapping[str, Any]) -> str:
         "    display_message=\"display -d 600 '#[fill=colour0 bg=colour${5} align=centre] ${2} '\"\n"
         "  fi\n\n"
         "  tmux_action=''\n\n"
+        '  escaped_action=${3//\"/\\\\\"}\n\n'
         "  if [ \"$4\" = \"view\" ]; then\n"
         "    tmux_action=\"run-shell 'zsh ${TMPDIR:-/tmp}/zsh-${UID}/tmux-keys.zsh $3'\"\n"
         "  elif [ \"$4\" = \"insert\" ]; then\n"
-        "    tmux_action=\"send-keys $keys[$1] '$3'\"\n"
+        "    tmux_action=\"send-keys $keys[$1] \\\"$escaped_action\\\"\"\n"
         "  elif [ \"$4\" = \"exec\" ]; then\n"
-        "    tmux_action=\"send-keys $keys[$1] '$3' C-m\"\n"
+        "    tmux_action=\"send-keys $keys[$1] \\\"$escaped_action\\\" C-m\"\n"
         "  elif [ \"$4\" = \"popup\" ]; then\n"
-        "    tmux_action=\"display-popup -d '#{pane_current_path}' -w '80%' -h '80%' $3\"\n"
+        "    tmux_action=\"display-popup -d '#{pane_current_path}' -w '80%' -h '80%' -- \\\"$escaped_action\\\"\"\n"
         "  elif [ \"$4\" = \"tmux\" ]; then\n"
         "    tmux_action=\"$3\"\n"
         "  fi\n\n"
