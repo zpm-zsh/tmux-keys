@@ -1,0 +1,700 @@
+# DevOps & Server Administration tmux-keys configuration
+# Docker, Kubernetes, system monitoring, networking, logs, security, cloud tools
+
+default_view: "Main"
+
+views:
+  "Main":
+    - title: "Prev"
+      type: tmux
+      action: previous-window
+      color: green
+      sh: false
+    - title: "Next"
+      type: tmux
+      action: next-window
+      color: green
+      sh: false
+    - type: view
+      action: Docker
+      color: azure
+    - type: view
+      action: K8s
+      color: blue
+    - type: view
+      action: System
+      color: yellow
+    - type: view
+      action: Network
+      color: cyan
+    - type: view
+      action: Logs
+      color: orange
+    - type: view
+      action: Security
+      color: red
+    - type: view
+      action: Cloud
+      color: violet
+    - type: view
+      action: Git
+      color: chartreuse
+
+  # ═══════════════════════════════════════════════════════════
+  # DOCKER
+  # ═══════════════════════════════════════════════════════════
+
+  "Docker":
+    - type: view
+      action: Main
+    - title: "PS"
+      type: exec
+      action: "docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'"
+    - title: "PS All"
+      type: exec
+      action: "docker ps -a --format 'table {{.Names}}\t{{.Status}}\t{{.Image}}'"
+    - title: "Images"
+      type: exec
+      action: "docker images --format 'table {{.Repository}}\t{{.Tag}}\t{{.Size}}'"
+    - title: "Stats"
+      type: popup
+      action: "docker stats"
+      color: cyan
+    - type: view
+      action: DockerRun
+      color: green
+    - type: view
+      action: DockerClean
+      color: red
+    - type: view
+      action: Compose
+      color: violet
+    - title: "Networks"
+      type: exec
+      action: "docker network ls"
+    - title: "Volumes"
+      type: exec
+      action: "docker volume ls"
+
+  "DockerRun":
+    - type: view
+      action: Docker
+    - title: "Run"
+      type: insert
+      action: "docker run -it --rm "
+    - title: "Run -d"
+      type: insert
+      action: "docker run -d --name "
+    - title: "Exec"
+      type: insert
+      action: "docker exec -it "
+    - title: "Logs"
+      type: insert
+      action: "docker logs -f "
+    - title: "Stop"
+      type: insert
+      action: "docker stop "
+      color: orange
+    - title: "Start"
+      type: insert
+      action: "docker start "
+      color: green
+    - title: "Restart"
+      type: insert
+      action: "docker restart "
+    - title: "Kill"
+      type: insert
+      action: "docker kill "
+      color: red
+    - title: "Inspect"
+      type: insert
+      action: "docker inspect "
+
+  "DockerClean":
+    - type: view
+      action: Docker
+    - title: "Prune All"
+      type: exec
+      action: "docker system prune -af"
+      color: red
+    - title: "Prune"
+      type: exec
+      action: "docker system prune -f"
+      color: orange
+    - title: "RM Exited"
+      type: exec
+      action: "docker rm $(docker ps -aq -f status=exited) 2>/dev/null || echo 'No exited containers'"
+    - title: "RMI None"
+      type: exec
+      action: "docker rmi $(docker images -q -f dangling=true) 2>/dev/null || echo 'No dangling images'"
+    - title: "Vol Prune"
+      type: exec
+      action: "docker volume prune -f"
+      color: red
+    - title: "Net Prune"
+      type: exec
+      action: "docker network prune -f"
+    - title: "Build Prune"
+      type: exec
+      action: "docker builder prune -f"
+    - title: "Disk Usage"
+      type: exec
+      action: "docker system df"
+
+  "Compose":
+    - type: view
+      action: Docker
+    - title: "Up"
+      type: exec
+      action: "docker compose up -d"
+      color: green
+    - title: "Up Build"
+      type: exec
+      action: "docker compose up -d --build"
+    - title: "Down"
+      type: exec
+      action: "docker compose down"
+      color: red
+    - title: "Down -v"
+      type: exec
+      action: "docker compose down -v"
+      color: red
+    - title: "Logs"
+      type: popup
+      action: "docker compose logs -f"
+    - title: "PS"
+      type: exec
+      action: "docker compose ps"
+    - title: "Build"
+      type: exec
+      action: "docker compose build"
+    - title: "Restart"
+      type: exec
+      action: "docker compose restart"
+      color: orange
+    - title: "Pull"
+      type: exec
+      action: "docker compose pull"
+    - title: "Exec"
+      type: insert
+      action: "docker compose exec "
+
+  # ═══════════════════════════════════════════════════════════
+  # KUBERNETES
+  # ═══════════════════════════════════════════════════════════
+
+  "K8s":
+    - type: view
+      action: Main
+    - title: "Pods"
+      type: exec
+      action: "kubectl get pods -o wide"
+    - title: "Services"
+      type: exec
+      action: "kubectl get svc"
+    - title: "Deploys"
+      type: exec
+      action: "kubectl get deployments"
+    - type: view
+      action: K8sResources
+      color: azure
+    - type: view
+      action: K8sDebug
+      color: orange
+    - type: view
+      action: K8sContext
+      color: violet
+    - title: "Events"
+      type: exec
+      action: "kubectl get events --sort-by='.lastTimestamp' | tail -20"
+    - title: "Top Pods"
+      type: popup
+      action: "kubectl top pods"
+      color: cyan
+    - title: "Top Nodes"
+      type: exec
+      action: "kubectl top nodes"
+
+  "K8sResources":
+    - type: view
+      action: K8s
+    - title: "All"
+      type: exec
+      action: "kubectl get all"
+    - title: "Ingress"
+      type: exec
+      action: "kubectl get ingress"
+    - title: "ConfigMaps"
+      type: exec
+      action: "kubectl get configmaps"
+    - title: "Secrets"
+      type: exec
+      action: "kubectl get secrets"
+    - title: "PVC"
+      type: exec
+      action: "kubectl get pvc"
+    - title: "Nodes"
+      type: exec
+      action: "kubectl get nodes -o wide"
+    - title: "NS"
+      type: exec
+      action: "kubectl get namespaces"
+    - title: "CRDs"
+      type: exec
+      action: "kubectl get crds"
+
+  "K8sDebug":
+    - type: view
+      action: K8s
+    - title: "Describe"
+      type: insert
+      action: "kubectl describe pod "
+    - title: "Logs"
+      type: insert
+      action: "kubectl logs -f "
+    - title: "Logs Prev"
+      type: insert
+      action: "kubectl logs --previous "
+    - title: "Exec"
+      type: insert
+      action: "kubectl exec -it "
+    - title: "Port Fwd"
+      type: insert
+      action: "kubectl port-forward "
+    - title: "Apply"
+      type: insert
+      action: "kubectl apply -f "
+      color: green
+    - title: "Delete"
+      type: insert
+      action: "kubectl delete "
+      color: red
+    - title: "Edit"
+      type: insert
+      action: "kubectl edit "
+    - title: "Rollout"
+      type: insert
+      action: "kubectl rollout status deployment/"
+
+  "K8sContext":
+    - type: view
+      action: K8s
+    - title: "Current"
+      type: exec
+      action: "kubectl config current-context"
+      color: cyan
+    - title: "Contexts"
+      type: exec
+      action: "kubectl config get-contexts"
+    - title: "Use"
+      type: insert
+      action: "kubectl config use-context "
+      color: orange
+    - title: "NS Set"
+      type: insert
+      action: "kubectl config set-context --current --namespace="
+    - title: "Cluster"
+      type: exec
+      action: "kubectl cluster-info"
+    - title: "Version"
+      type: exec
+      action: "kubectl version --short"
+
+  # ═══════════════════════════════════════════════════════════
+  # SYSTEM MONITORING
+  # ═══════════════════════════════════════════════════════════
+
+  "System":
+    - type: view
+      action: Main
+    - title: "htop"
+      type: popup
+      action: "htop"
+      color: cyan
+    - title: "btop"
+      type: popup
+      action: "btop"
+      color: cyan
+    - title: "Memory"
+      type: exec
+      action: "free -h"
+    - title: "Uptime"
+      type: exec
+      action: "uptime"
+    - title: "Load"
+      type: exec
+      action: "cat /proc/loadavg && echo '' && nproc"
+    - type: view
+      action: Disk
+      color: yellow
+    - type: view
+      action: Services
+      color: green
+    - type: view
+      action: Procs
+      color: orange
+    - title: "Temps"
+      type: exec
+      action: "sensors 2>/dev/null || echo 'lm-sensors not installed'"
+
+  "Disk":
+    - type: view
+      action: System
+    - title: "Usage"
+      type: exec
+      action: "df -h"
+    - title: "Inodes"
+      type: exec
+      action: "df -i"
+    - title: "Mounts"
+      type: exec
+      action: "mount | column -t"
+    - title: "Du Here"
+      type: exec
+      action: "du -sh * 2>/dev/null | sort -rh | head -15"
+    - title: "Du Home"
+      type: exec
+      action: "du -sh ~/* 2>/dev/null | sort -rh | head -15"
+    - title: "Big Files"
+      type: exec
+      action: "find . -type f -size +100M -exec ls -lh {} \\; 2>/dev/null | head -20"
+      color: orange
+    - title: "iostat"
+      type: popup
+      action: "iostat -x 1"
+      color: cyan
+    - title: "lsblk"
+      type: exec
+      action: "lsblk -f"
+
+  "Services":
+    - type: view
+      action: System
+    - title: "Running"
+      type: exec
+      action: "systemctl list-units --type=service --state=running --no-pager | head -30"
+    - title: "Failed"
+      type: exec
+      action: "systemctl list-units --state=failed"
+      color: red
+    - title: "Status"
+      type: insert
+      action: "systemctl status "
+    - title: "Start"
+      type: insert
+      action: "sudo systemctl start "
+      color: green
+    - title: "Stop"
+      type: insert
+      action: "sudo systemctl stop "
+      color: red
+    - title: "Restart"
+      type: insert
+      action: "sudo systemctl restart "
+      color: orange
+    - title: "Enable"
+      type: insert
+      action: "sudo systemctl enable "
+    - title: "Disable"
+      type: insert
+      action: "sudo systemctl disable "
+    - title: "Daemon Reload"
+      type: exec
+      action: "sudo systemctl daemon-reload"
+
+  "Procs":
+    - type: view
+      action: System
+    - title: "By CPU"
+      type: exec
+      action: "ps aux --sort=-%cpu | head -15"
+    - title: "By Mem"
+      type: exec
+      action: "ps aux --sort=-%mem | head -15"
+    - title: "Tree"
+      type: popup
+      action: "pstree -p"
+    - title: "Count"
+      type: exec
+      action: "ps aux | wc -l"
+    - title: "Kill"
+      type: insert
+      action: "kill "
+      color: orange
+    - title: "Kill -9"
+      type: insert
+      action: "kill -9 "
+      color: red
+    - title: "pkill"
+      type: insert
+      action: "pkill "
+    - title: "pgrep"
+      type: insert
+      action: "pgrep -a "
+
+  # ═══════════════════════════════════════════════════════════
+  # NETWORK
+  # ═══════════════════════════════════════════════════════════
+
+  "Network":
+    - type: view
+      action: Main
+    - title: "IP Addr"
+      type: exec
+      action: "ip -c addr"
+    - title: "IP Route"
+      type: exec
+      action: "ip -c route"
+    - title: "Ports"
+      type: exec
+      action: "ss -tulpn"
+    - title: "Conns"
+      type: exec
+      action: "ss -s"
+    - title: "DNS"
+      type: exec
+      action: "cat /etc/resolv.conf"
+    - title: "Hosts"
+      type: exec
+      action: "cat /etc/hosts"
+    - title: "Ping"
+      type: insert
+      action: "ping -c 4 "
+    - title: "Trace"
+      type: insert
+      action: "traceroute "
+    - title: "Dig"
+      type: insert
+      action: "dig "
+    - title: "Curl"
+      type: insert
+      action: "curl -I "
+
+  # ═══════════════════════════════════════════════════════════
+  # LOGS
+  # ═══════════════════════════════════════════════════════════
+
+  "Logs":
+    - type: view
+      action: Main
+    - title: "Journal"
+      type: popup
+      action: "journalctl -f"
+    - title: "Journal -e"
+      type: popup
+      action: "journalctl -e"
+    - title: "Errors"
+      type: exec
+      action: "journalctl -p err -b --no-pager | tail -30"
+      color: red
+    - title: "Boot"
+      type: exec
+      action: "journalctl -b --no-pager | tail -50"
+    - title: "Service"
+      type: insert
+      action: "journalctl -u "
+    - title: "Syslog"
+      type: popup
+      action: "sudo tail -f /var/log/syslog 2>/dev/null || sudo tail -f /var/log/messages"
+    - title: "Auth"
+      type: popup
+      action: "sudo tail -f /var/log/auth.log 2>/dev/null || sudo tail -f /var/log/secure"
+    - title: "Dmesg"
+      type: popup
+      action: "dmesg -wT"
+    - title: "Nginx"
+      type: popup
+      action: "sudo tail -f /var/log/nginx/access.log"
+
+  # ═══════════════════════════════════════════════════════════
+  # SECURITY
+  # ═══════════════════════════════════════════════════════════
+
+  "Security":
+    - type: view
+      action: Main
+    - title: "Who"
+      type: exec
+      action: "who"
+    - title: "Last"
+      type: exec
+      action: "last -n 15"
+    - title: "Failed"
+      type: exec
+      action: "sudo lastb -n 15 2>/dev/null || journalctl -u sshd | grep -i failed | tail -15"
+      color: red
+    - title: "SSH Keys"
+      type: exec
+      action: "ls -la ~/.ssh/"
+    - title: "UFW Status"
+      type: exec
+      action: "sudo ufw status verbose 2>/dev/null || echo 'ufw not installed'"
+    - title: "iptables"
+      type: exec
+      action: "sudo iptables -L -n --line-numbers"
+    - title: "Open Ports"
+      type: exec
+      action: "sudo ss -tulpn | grep LISTEN"
+      color: orange
+    - title: "Users"
+      type: exec
+      action: "cat /etc/passwd | grep -v nologin | grep -v false"
+    - title: "Sudoers"
+      type: exec
+      action: "sudo cat /etc/sudoers.d/* 2>/dev/null; sudo grep -v '^#' /etc/sudoers | grep -v '^$'"
+
+  # ═══════════════════════════════════════════════════════════
+  # CLOUD TOOLS
+  # ═══════════════════════════════════════════════════════════
+
+  "Cloud":
+    - type: view
+      action: Main
+    - type: view
+      action: AWS
+      color: orange
+    - type: view
+      action: GCP
+      color: azure
+    - type: view
+      action: Terraform
+      color: violet
+    - title: "Ansible"
+      type: insert
+      action: "ansible-playbook "
+      color: red
+    - title: "Vault"
+      type: exec
+      action: "vault status"
+      color: yellow
+
+  "AWS":
+    - type: view
+      action: Cloud
+    - title: "Who"
+      type: exec
+      action: "aws sts get-caller-identity"
+    - title: "EC2 List"
+      type: exec
+      action: "aws ec2 describe-instances --query 'Reservations[].Instances[].[InstanceId,State.Name,Tags[?Key==`Name`].Value|[0]]' --output table"
+    - title: "S3 List"
+      type: exec
+      action: "aws s3 ls"
+    - title: "S3 Bucket"
+      type: insert
+      action: "aws s3 ls s3://"
+    - title: "ECR Login"
+      type: exec
+      action: "aws ecr get-login-password | docker login --username AWS --password-stdin $(aws sts get-caller-identity --query Account --output text).dkr.ecr.$(aws configure get region).amazonaws.com"
+      color: green
+    - title: "Logs"
+      type: insert
+      action: "aws logs tail "
+    - title: "SSM"
+      type: insert
+      action: "aws ssm start-session --target "
+      color: cyan
+
+  "GCP":
+    - type: view
+      action: Cloud
+    - title: "Auth"
+      type: exec
+      action: "gcloud auth list"
+    - title: "Project"
+      type: exec
+      action: "gcloud config get-value project"
+    - title: "Projects"
+      type: exec
+      action: "gcloud projects list"
+    - title: "Set Project"
+      type: insert
+      action: "gcloud config set project "
+    - title: "Compute"
+      type: exec
+      action: "gcloud compute instances list"
+    - title: "GKE"
+      type: exec
+      action: "gcloud container clusters list"
+    - title: "GCR Login"
+      type: exec
+      action: "gcloud auth configure-docker"
+      color: green
+    - title: "SSH"
+      type: insert
+      action: "gcloud compute ssh "
+      color: cyan
+
+  "Terraform":
+    - type: view
+      action: Cloud
+    - title: "Init"
+      type: exec
+      action: "terraform init"
+      color: green
+    - title: "Plan"
+      type: exec
+      action: "terraform plan"
+      color: cyan
+    - title: "Apply"
+      type: exec
+      action: "terraform apply"
+      color: orange
+    - title: "Apply Auto"
+      type: exec
+      action: "terraform apply -auto-approve"
+      color: red
+    - title: "Destroy"
+      type: exec
+      action: "terraform destroy"
+      color: red
+    - title: "State"
+      type: exec
+      action: "terraform state list"
+    - title: "Output"
+      type: exec
+      action: "terraform output"
+    - title: "Fmt"
+      type: exec
+      action: "terraform fmt -recursive"
+    - title: "Validate"
+      type: exec
+      action: "terraform validate"
+
+  # ═══════════════════════════════════════════════════════════
+  # GIT (basic)
+  # ═══════════════════════════════════════════════════════════
+
+  "Git":
+    - type: view
+      action: Main
+    - title: "Status"
+      type: exec
+      action: "git status"
+    - title: "Diff"
+      type: popup
+      action: "git diff"
+    - title: "Log"
+      type: popup
+      action: "git log --oneline --graph -20"
+    - title: "Add All"
+      type: exec
+      action: "git add -A"
+      color: green
+    - title: "Commit"
+      type: insert
+      action: "git commit -m \""
+    - title: "Push"
+      type: exec
+      action: "git push"
+      color: orange
+    - title: "Pull"
+      type: exec
+      action: "git pull"
+      color: azure
+    - title: "Stash"
+      type: exec
+      action: "git stash"
+    - title: "Pop"
+      type: exec
+      action: "git stash pop"

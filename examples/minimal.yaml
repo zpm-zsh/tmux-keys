@@ -1,0 +1,37 @@
+# Minimal tmux-keys configuration
+# A simple starter config with essential navigation and common commands
+
+default_view: "Main"
+
+views:
+  "Main":
+    # Window navigation
+    - title: "Prev"
+      type: tmux
+      action: previous-window
+      color: green
+      sh: false
+    - title: "Next"
+      type: tmux
+      action: next-window
+      color: green
+      sh: false
+    # Pane management
+    - title: "Split H"
+      type: tmux
+      action: split-window -h
+      color: blue
+      sh: false
+    - title: "Split V"
+      type: tmux
+      action: split-window -v
+      color: blue
+      sh: false
+    # Quick commands
+    - title: "Clear"
+      type: exec
+      action: clear
+    - title: "Exit"
+      type: exec
+      action: exit
+      color: red

@@ -1,0 +1,558 @@
+# Python Development tmux-keys configuration
+# venv, pip, poetry, uv, pytest, Django, FastAPI, Flask, linting, typing
+
+default_view: "Main"
+
+views:
+  "Main":
+    - title: "Prev"
+      type: tmux
+      action: previous-window
+      color: green
+      sh: false
+    - title: "Next"
+      type: tmux
+      action: next-window
+      color: green
+      sh: false
+    - type: view
+      action: Env
+      color: chartreuse
+    - type: view
+      action: Deps
+      color: azure
+    - type: view
+      action: Test
+      color: yellow
+    - type: view
+      action: Lint
+      color: violet
+    - type: view
+      action: Web
+      color: cyan
+    - type: view
+      action: DB
+      color: magenta
+    - type: view
+      action: Git
+      color: orange
+
+  # ═══════════════════════════════════════════════════════════
+  # ENVIRONMENT MANAGEMENT
+  # ═══════════════════════════════════════════════════════════
+
+  "Env":
+    - type: view
+      action: Main
+    - title: "Python"
+      type: popup
+      action: "python"
+      color: yellow
+    - title: "IPython"
+      type: popup
+      action: "ipython"
+      color: cyan
+    - title: "Which Py"
+      type: exec
+      action: "which python && python --version"
+    - type: view
+      action: Venv
+      color: green
+    - type: view
+      action: Poetry
+      color: azure
+    - type: view
+      action: UV
+      color: orange
+    - title: "Pyenv"
+      type: view
+      action: Pyenv
+      color: violet
+
+  "Venv":
+    - type: view
+      action: Env
+    - title: "Create"
+      type: exec
+      action: "python -m venv .venv"
+      color: green
+    - title: "Activate"
+      type: exec
+      action: "source .venv/bin/activate"
+      color: cyan
+    - title: "Deactivate"
+      type: exec
+      action: "deactivate"
+    - title: "Create 3.11"
+      type: exec
+      action: "python3.11 -m venv .venv"
+    - title: "Create 3.12"
+      type: exec
+      action: "python3.12 -m venv .venv"
+    - title: "Recreate"
+      type: exec
+      action: "rm -rf .venv && python -m venv .venv && source .venv/bin/activate"
+      color: orange
+    - title: "Site Pkgs"
+      type: exec
+      action: "python -c \"import site; print(site.getsitepackages()[0])\""
+
+  "Poetry":
+    - type: view
+      action: Env
+    - title: "Install"
+      type: exec
+      action: "poetry install"
+      color: green
+    - title: "Update"
+      type: exec
+      action: "poetry update"
+    - title: "Add"
+      type: insert
+      action: "poetry add "
+    - title: "Add -D"
+      type: insert
+      action: "poetry add -D "
+    - title: "Remove"
+      type: insert
+      action: "poetry remove "
+      color: red
+    - title: "Shell"
+      type: exec
+      action: "poetry shell"
+      color: cyan
+    - title: "Run"
+      type: insert
+      action: "poetry run "
+    - title: "Build"
+      type: exec
+      action: "poetry build"
+    - title: "Lock"
+      type: exec
+      action: "poetry lock"
+    - title: "Show"
+      type: exec
+      action: "poetry show --tree"
+
+  "UV":
+    - type: view
+      action: Env
+    - title: "Sync"
+      type: exec
+      action: "uv sync"
+      color: green
+    - title: "Add"
+      type: insert
+      action: "uv add "
+    - title: "Add -D"
+      type: insert
+      action: "uv add --dev "
+    - title: "Remove"
+      type: insert
+      action: "uv remove "
+      color: red
+    - title: "Lock"
+      type: exec
+      action: "uv lock"
+    - title: "Run"
+      type: insert
+      action: "uv run "
+    - title: "Pip Install"
+      type: insert
+      action: "uv pip install "
+    - title: "Pip Compile"
+      type: exec
+      action: "uv pip compile requirements.in -o requirements.txt"
+    - title: "Venv"
+      type: exec
+      action: "uv venv"
+      color: cyan
+
+  "Pyenv":
+    - type: view
+      action: Env
+    - title: "Versions"
+      type: exec
+      action: "pyenv versions"
+    - title: "Install"
+      type: insert
+      action: "pyenv install "
+      color: green
+    - title: "List"
+      type: exec
+      action: "pyenv install --list | grep -E '^\\s*3\\.(1[0-3])' | tail -20"
+    - title: "Global"
+      type: insert
+      action: "pyenv global "
+    - title: "Local"
+      type: insert
+      action: "pyenv local "
+    - title: "Shell"
+      type: insert
+      action: "pyenv shell "
+    - title: "Uninstall"
+      type: insert
+      action: "pyenv uninstall "
+      color: red
+    - title: "Which"
+      type: exec
+      action: "pyenv which python"
+
+  # ═══════════════════════════════════════════════════════════
+  # DEPENDENCIES
+  # ═══════════════════════════════════════════════════════════
+
+  "Deps":
+    - type: view
+      action: Main
+    - title: "Install"
+      type: insert
+      action: "pip install "
+    - title: "Req"
+      type: exec
+      action: "pip install -r requirements.txt"
+      color: green
+    - title: "Req Dev"
+      type: exec
+      action: "pip install -r requirements-dev.txt"
+    - title: "Freeze"
+      type: exec
+      action: "pip freeze > requirements.txt"
+    - title: "List"
+      type: exec
+      action: "pip list"
+    - title: "Outdated"
+      type: exec
+      action: "pip list --outdated"
+      color: orange
+    - title: "Show"
+      type: insert
+      action: "pip show "
+    - title: "Uninstall"
+      type: insert
+      action: "pip uninstall -y "
+      color: red
+    - title: "Cache"
+      type: exec
+      action: "pip cache info"
+
+  # ═══════════════════════════════════════════════════════════
+  # TESTING
+  # ═══════════════════════════════════════════════════════════
+
+  "Test":
+    - type: view
+      action: Main
+    - title: "Pytest"
+      type: exec
+      action: "pytest"
+      color: green
+    - title: "Verbose"
+      type: exec
+      action: "pytest -v"
+    - title: "Very Verb"
+      type: exec
+      action: "pytest -vv"
+    - title: "Last Fail"
+      type: exec
+      action: "pytest --lf"
+      color: orange
+    - title: "Failed 1st"
+      type: exec
+      action: "pytest -x"
+    - title: "Coverage"
+      type: exec
+      action: "pytest --cov --cov-report=term-missing"
+      color: cyan
+    - title: "Watch"
+      type: popup
+      action: "ptw -- -v"
+    - title: "Markers"
+      type: exec
+      action: "pytest --markers"
+    - title: "File"
+      type: insert
+      action: "pytest "
+    - title: "-k"
+      type: insert
+      action: "pytest -k "
+
+  # ═══════════════════════════════════════════════════════════
+  # LINTING & FORMATTING
+  # ═══════════════════════════════════════════════════════════
+
+  "Lint":
+    - type: view
+      action: Main
+    - title: "Ruff"
+      type: exec
+      action: "ruff check ."
+    - title: "Ruff Fix"
+      type: exec
+      action: "ruff check . --fix"
+      color: green
+    - title: "Ruff Fmt"
+      type: exec
+      action: "ruff format ."
+      color: green
+    - title: "Black"
+      type: exec
+      action: "black ."
+      color: green
+    - title: "Black Check"
+      type: exec
+      action: "black . --check"
+    - title: "isort"
+      type: exec
+      action: "isort ."
+    - title: "Mypy"
+      type: exec
+      action: "mypy ."
+      color: azure
+    - title: "Pyright"
+      type: exec
+      action: "pyright"
+      color: azure
+    - title: "Flake8"
+      type: exec
+      action: "flake8 ."
+    - title: "Bandit"
+      type: exec
+      action: "bandit -r ."
+      color: red
+
+  # ═══════════════════════════════════════════════════════════
+  # WEB FRAMEWORKS
+  # ═══════════════════════════════════════════════════════════
+
+  "Web":
+    - type: view
+      action: Main
+    - type: view
+      action: Django
+      color: green
+    - type: view
+      action: FastAPI
+      color: cyan
+    - type: view
+      action: Flask
+      color: orange
+    - title: "Gunicorn"
+      type: insert
+      action: "gunicorn -w 4 "
+    - title: "Uvicorn"
+      type: insert
+      action: "uvicorn --reload "
+
+  "Django":
+    - type: view
+      action: Web
+    - title: "Run"
+      type: exec
+      action: "python manage.py runserver"
+      color: green
+    - title: "Run 0.0.0.0"
+      type: exec
+      action: "python manage.py runserver 0.0.0.0:8000"
+    - title: "Shell"
+      type: popup
+      action: "python manage.py shell_plus 2>/dev/null || python manage.py shell"
+      color: yellow
+    - title: "DB Shell"
+      type: popup
+      action: "python manage.py dbshell"
+    - title: "Migrate"
+      type: exec
+      action: "python manage.py migrate"
+      color: azure
+    - title: "MakeMig"
+      type: exec
+      action: "python manage.py makemigrations"
+    - title: "ShowMig"
+      type: exec
+      action: "python manage.py showmigrations"
+    - title: "Test"
+      type: exec
+      action: "python manage.py test"
+      color: yellow
+    - title: "Collect"
+      type: exec
+      action: "python manage.py collectstatic --noinput"
+    - title: "Superuser"
+      type: exec
+      action: "python manage.py createsuperuser"
+      color: orange
+
+  "FastAPI":
+    - type: view
+      action: Web
+    - title: "Run"
+      type: exec
+      action: "uvicorn main:app --reload"
+      color: green
+    - title: "Run Host"
+      type: exec
+      action: "uvicorn main:app --reload --host 0.0.0.0"
+    - title: "Run Port"
+      type: insert
+      action: "uvicorn main:app --reload --port "
+    - title: "Prod"
+      type: exec
+      action: "gunicorn main:app -w 4 -k uvicorn.workers.UvicornWorker"
+      color: orange
+    - title: "Docs"
+      type: exec
+      action: "echo 'Swagger: http://localhost:8000/docs' && echo 'ReDoc: http://localhost:8000/redoc'"
+      color: cyan
+
+  "Flask":
+    - type: view
+      action: Web
+    - title: "Run"
+      type: exec
+      action: "flask run"
+      color: green
+    - title: "Run Debug"
+      type: exec
+      action: "flask run --debug"
+    - title: "Run Host"
+      type: exec
+      action: "flask run --host=0.0.0.0"
+    - title: "Shell"
+      type: popup
+      action: "flask shell"
+      color: yellow
+    - title: "Routes"
+      type: exec
+      action: "flask routes"
+    - title: "DB Init"
+      type: exec
+      action: "flask db init"
+    - title: "DB Migrate"
+      type: exec
+      action: "flask db migrate"
+      color: azure
+    - title: "DB Upgrade"
+      type: exec
+      action: "flask db upgrade"
+
+  # ═══════════════════════════════════════════════════════════
+  # DATABASE
+  # ═══════════════════════════════════════════════════════════
+
+  "DB":
+    - type: view
+      action: Main
+    - type: view
+      action: SQLAlchemy
+      color: violet
+    - type: view
+      action: Alembic
+      color: orange
+    - title: "psql"
+      type: insert
+      action: "psql "
+      color: azure
+    - title: "sqlite3"
+      type: insert
+      action: "sqlite3 "
+    - title: "Redis"
+      type: popup
+      action: "redis-cli"
+      color: red
+    - title: "Mongo"
+      type: popup
+      action: "mongosh"
+      color: green
+    - title: "pgcli"
+      type: insert
+      action: "pgcli "
+      color: cyan
+
+  "SQLAlchemy":
+    - type: view
+      action: DB
+    - title: "Shell"
+      type: popup
+      action: "python -c \"from app.db import engine, Base; from sqlalchemy.orm import Session; session = Session(engine); import code; code.interact(local=locals())\""
+      color: yellow
+    - title: "Tables"
+      type: exec
+      action: "python -c \"from app.db import engine, Base; print('\\n'.join(Base.metadata.tables.keys()))\""
+    - title: "Create All"
+      type: exec
+      action: "python -c \"from app.db import engine, Base; Base.metadata.create_all(engine)\""
+      color: green
+    - title: "Drop All"
+      type: exec
+      action: "python -c \"from app.db import engine, Base; Base.metadata.drop_all(engine)\""
+      color: red
+
+  "Alembic":
+    - type: view
+      action: DB
+    - title: "Init"
+      type: exec
+      action: "alembic init alembic"
+      color: green
+    - title: "Revision"
+      type: insert
+      action: "alembic revision --autogenerate -m \""
+    - title: "Upgrade"
+      type: exec
+      action: "alembic upgrade head"
+      color: azure
+    - title: "Downgrade"
+      type: exec
+      action: "alembic downgrade -1"
+      color: orange
+    - title: "Current"
+      type: exec
+      action: "alembic current"
+    - title: "History"
+      type: exec
+      action: "alembic history"
+    - title: "Heads"
+      type: exec
+      action: "alembic heads"
+    - title: "Stamp"
+      type: insert
+      action: "alembic stamp "
+
+  # ═══════════════════════════════════════════════════════════
+  # GIT
+  # ═══════════════════════════════════════════════════════════
+
+  "Git":
+    - type: view
+      action: Main
+    - title: "Status"
+      type: exec
+      action: "git status"
+    - title: "Diff"
+      type: popup
+      action: "git diff"
+    - title: "Log"
+      type: popup
+      action: "git log --oneline --graph -20"
+    - title: "Add All"
+      type: exec
+      action: "git add -A"
+      color: green
+    - title: "Commit"
+      type: insert
+      action: "git commit -m \""
+    - title: "Push"
+      type: exec
+      action: "git push"
+      color: orange
+    - title: "Pull"
+      type: exec
+      action: "git pull"
+      color: azure
+    - title: "Branch"
+      type: exec
+      action: "git branch -a"
+    - title: "Checkout"
+      type: insert
+      action: "git checkout "

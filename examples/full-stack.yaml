@@ -1,0 +1,543 @@
+# Full-Stack Web Development tmux-keys configuration
+# Git workflow, npm/yarn/pnpm, testing, linting, bundlers, databases
+
+default_view: "Main"
+
+views:
+  "Main":
+    - title: "Prev"
+      type: tmux
+      action: previous-window
+      color: green
+      sh: false
+    - title: "Next"
+      type: tmux
+      action: next-window
+      color: green
+      sh: false
+    - type: view
+      action: Git
+      color: chartreuse
+    - type: view
+      action: NPM
+      color: red
+    - type: view
+      action: Yarn
+      color: azure
+    - type: view
+      action: Pnpm
+      color: orange
+    - type: view
+      action: Test
+      color: yellow
+    - type: view
+      action: Lint
+      color: violet
+    - type: view
+      action: Build
+      color: cyan
+    - type: view
+      action: DB
+      color: magenta
+
+  # ═══════════════════════════════════════════════════════════
+  # GIT WORKFLOW
+  # ═══════════════════════════════════════════════════════════
+
+  "Git":
+    - type: view
+      action: Main
+    - title: "Status"
+      type: exec
+      action: "git status"
+    - title: "Diff"
+      type: popup
+      action: "git diff"
+    - title: "Log"
+      type: popup
+      action: "git log --oneline --graph --decorate -30"
+    - type: view
+      action: GitStage
+      color: green
+    - type: view
+      action: GitBranch
+      color: azure
+    - type: view
+      action: GitCommit
+      color: yellow
+    - type: view
+      action: GitRemote
+      color: orange
+    - type: view
+      action: GitStash
+      color: violet
+
+  "GitStage":
+    - type: view
+      action: Git
+    - title: "Add All"
+      type: exec
+      action: "git add -A"
+      color: green
+    - title: "Add"
+      type: insert
+      action: "git add "
+    - title: "Add -p"
+      type: popup
+      action: "git add -p"
+      color: cyan
+    - title: "Staged"
+      type: popup
+      action: "git diff --staged"
+    - title: "Reset"
+      type: insert
+      action: "git reset "
+      color: orange
+    - title: "Reset All"
+      type: exec
+      action: "git reset HEAD"
+      color: red
+    - title: "Checkout"
+      type: insert
+      action: "git checkout -- "
+    - title: "Clean -n"
+      type: exec
+      action: "git clean -n"
+    - title: "Clean -f"
+      type: exec
+      action: "git clean -f"
+      color: red
+
+  "GitBranch":
+    - type: view
+      action: Git
+    - title_exec: "git branch --show-current"
+      type: exec
+      action: "git branch"
+      color: cyan
+    - title: "All"
+      type: exec
+      action: "git branch -a"
+    - title: "New"
+      type: insert
+      action: "git checkout -b "
+      color: green
+    - title: "Switch"
+      type: insert
+      action: "git checkout "
+    - title: "Delete"
+      type: insert
+      action: "git branch -d "
+      color: red
+    - title: "Delete -D"
+      type: insert
+      action: "git branch -D "
+      color: red
+    - title: "Merge"
+      type: insert
+      action: "git merge "
+      color: orange
+    - title: "Rebase"
+      type: insert
+      action: "git rebase "
+      color: violet
+    - title: "Rebase -i"
+      type: insert
+      action: "git rebase -i "
+
+  "GitCommit":
+    - type: view
+      action: Git
+    - title: "Commit"
+      type: insert
+      action: "git commit -m \""
+    - title: "Commit -a"
+      type: insert
+      action: "git commit -am \""
+      color: green
+    - title: "Amend"
+      type: exec
+      action: "git commit --amend"
+      color: orange
+    - title: "Amend No Edit"
+      type: exec
+      action: "git commit --amend --no-edit"
+    - title: "Fixup"
+      type: insert
+      action: "git commit --fixup "
+    - title: "WIP"
+      type: exec
+      action: "git commit -m 'WIP'"
+      color: yellow
+    - title: "Undo Last"
+      type: exec
+      action: "git reset --soft HEAD~1"
+      color: red
+    - title: "Show HEAD"
+      type: popup
+      action: "git show HEAD"
+
+  "GitRemote":
+    - type: view
+      action: Git
+    - title: "Push"
+      type: exec
+      action: "git push"
+      color: green
+    - title: "Pull"
+      type: exec
+      action: "git pull"
+      color: azure
+    - title: "Fetch"
+      type: exec
+      action: "git fetch --all --prune"
+    - title: "Upstream"
+      type: exec
+      action: "git push -u origin HEAD"
+      color: orange
+    - title: "Force"
+      type: exec
+      action: "git push --force-with-lease"
+      color: red
+    - title: "Remotes"
+      type: exec
+      action: "git remote -v"
+    - title: "PR Branch"
+      type: insert
+      action: "git fetch origin pull/"
+    - title: "Track"
+      type: insert
+      action: "git branch --set-upstream-to=origin/"
+
+  "GitStash":
+    - type: view
+      action: Git
+    - title: "List"
+      type: exec
+      action: "git stash list"
+    - title: "Show"
+      type: popup
+      action: "git stash show -p"
+    - title: "Save"
+      type: exec
+      action: "git stash push"
+      color: green
+    - title: "Save Msg"
+      type: insert
+      action: "git stash push -m \""
+    - title: "Pop"
+      type: exec
+      action: "git stash pop"
+      color: orange
+    - title: "Apply"
+      type: insert
+      action: "git stash apply stash@{"
+    - title: "Drop"
+      type: insert
+      action: "git stash drop stash@{"
+      color: red
+    - title: "Clear"
+      type: exec
+      action: "git stash clear"
+      color: red
+
+  # ═══════════════════════════════════════════════════════════
+  # PACKAGE MANAGERS
+  # ═══════════════════════════════════════════════════════════
+
+  "NPM":
+    - type: view
+      action: Main
+    - title: "Dev"
+      type: exec
+      action: "npm run dev"
+      color: cyan
+    - title: "Start"
+      type: exec
+      action: "npm start"
+      color: green
+    - title: "Build"
+      type: exec
+      action: "npm run build"
+    - title: "Test"
+      type: exec
+      action: "npm test"
+      color: yellow
+    - title: "Install"
+      type: exec
+      action: "npm install"
+    - title: "Add"
+      type: insert
+      action: "npm install "
+    - title: "Add -D"
+      type: insert
+      action: "npm install -D "
+    - title: "Outdated"
+      type: exec
+      action: "npm outdated"
+      color: orange
+    - title: "Audit"
+      type: exec
+      action: "npm audit"
+      color: red
+    - title: "Scripts"
+      type: exec
+      action: "npm run"
+
+  "Yarn":
+    - type: view
+      action: Main
+    - title: "Dev"
+      type: exec
+      action: "yarn dev"
+      color: cyan
+    - title: "Start"
+      type: exec
+      action: "yarn start"
+      color: green
+    - title: "Build"
+      type: exec
+      action: "yarn build"
+    - title: "Test"
+      type: exec
+      action: "yarn test"
+      color: yellow
+    - title: "Install"
+      type: exec
+      action: "yarn"
+    - title: "Add"
+      type: insert
+      action: "yarn add "
+    - title: "Add -D"
+      type: insert
+      action: "yarn add -D "
+    - title: "Upgrade"
+      type: popup
+      action: "yarn upgrade-interactive"
+      color: orange
+    - title: "Why"
+      type: insert
+      action: "yarn why "
+    - title: "Scripts"
+      type: exec
+      action: "yarn run"
+
+  "Pnpm":
+    - type: view
+      action: Main
+    - title: "Dev"
+      type: exec
+      action: "pnpm dev"
+      color: cyan
+    - title: "Start"
+      type: exec
+      action: "pnpm start"
+      color: green
+    - title: "Build"
+      type: exec
+      action: "pnpm build"
+    - title: "Test"
+      type: exec
+      action: "pnpm test"
+      color: yellow
+    - title: "Install"
+      type: exec
+      action: "pnpm install"
+    - title: "Add"
+      type: insert
+      action: "pnpm add "
+    - title: "Add -D"
+      type: insert
+      action: "pnpm add -D "
+    - title: "Update"
+      type: popup
+      action: "pnpm update -i"
+      color: orange
+    - title: "Why"
+      type: insert
+      action: "pnpm why "
+    - title: "Store"
+      type: exec
+      action: "pnpm store status"
+
+  # ═══════════════════════════════════════════════════════════
+  # TESTING & QUALITY
+  # ═══════════════════════════════════════════════════════════
+
+  "Test":
+    - type: view
+      action: Main
+    - title: "Jest"
+      type: exec
+      action: "npm test"
+      color: green
+    - title: "Watch"
+      type: popup
+      action: "npm test -- --watch"
+      color: cyan
+    - title: "Coverage"
+      type: exec
+      action: "npm test -- --coverage"
+      color: yellow
+    - title: "Vitest"
+      type: exec
+      action: "npx vitest"
+    - title: "Vitest UI"
+      type: exec
+      action: "npx vitest --ui"
+      color: cyan
+    - title: "Playwright"
+      type: exec
+      action: "npx playwright test"
+    - title: "Cypress"
+      type: popup
+      action: "npx cypress open"
+    - title: "File"
+      type: insert
+      action: "npm test -- "
+
+  "Lint":
+    - type: view
+      action: Main
+    - title: "ESLint"
+      type: exec
+      action: "npm run lint"
+    - title: "Fix"
+      type: exec
+      action: "npm run lint -- --fix"
+      color: green
+    - title: "Prettier"
+      type: exec
+      action: "npx prettier --check ."
+    - title: "Format"
+      type: exec
+      action: "npx prettier --write ."
+      color: green
+    - title: "TypeCheck"
+      type: exec
+      action: "npx tsc --noEmit"
+      color: azure
+    - title: "Stylelint"
+      type: exec
+      action: "npx stylelint '**/*.css'"
+    - title: "Knip"
+      type: exec
+      action: "npx knip"
+      color: orange
+
+  "Build":
+    - type: view
+      action: Main
+    - title: "Build"
+      type: exec
+      action: "npm run build"
+      color: green
+    - title: "Vite"
+      type: exec
+      action: "npx vite build"
+    - title: "Preview"
+      type: exec
+      action: "npx vite preview"
+      color: cyan
+    - title: "Next"
+      type: exec
+      action: "npx next build"
+    - title: "Turbo"
+      type: exec
+      action: "npx turbo build"
+    - title: "Analyze"
+      type: exec
+      action: "npm run build -- --analyze"
+      color: orange
+    - title: "Clean"
+      type: exec
+      action: "rm -rf dist .next out build node_modules/.cache"
+      color: red
+
+  # ═══════════════════════════════════════════════════════════
+  # DATABASE
+  # ═══════════════════════════════════════════════════════════
+
+  "DB":
+    - type: view
+      action: Main
+    - type: view
+      action: Prisma
+      color: violet
+    - type: view
+      action: Drizzle
+      color: chartreuse
+    - title: "psql"
+      type: insert
+      action: "psql "
+      color: azure
+    - title: "mysql"
+      type: insert
+      action: "mysql -u root -p "
+      color: orange
+    - title: "Redis CLI"
+      type: popup
+      action: "redis-cli"
+      color: red
+    - title: "Mongo"
+      type: popup
+      action: "mongosh"
+      color: green
+
+  "Prisma":
+    - type: view
+      action: DB
+    - title: "Studio"
+      type: exec
+      action: "npx prisma studio"
+      color: cyan
+    - title: "Generate"
+      type: exec
+      action: "npx prisma generate"
+      color: green
+    - title: "Push"
+      type: exec
+      action: "npx prisma db push"
+    - title: "Pull"
+      type: exec
+      action: "npx prisma db pull"
+    - title: "Migrate"
+      type: insert
+      action: "npx prisma migrate dev --name "
+      color: orange
+    - title: "Reset"
+      type: exec
+      action: "npx prisma migrate reset"
+      color: red
+    - title: "Seed"
+      type: exec
+      action: "npx prisma db seed"
+    - title: "Format"
+      type: exec
+      action: "npx prisma format"
+
+  "Drizzle":
+    - type: view
+      action: DB
+    - title: "Studio"
+      type: exec
+      action: "npx drizzle-kit studio"
+      color: cyan
+    - title: "Generate"
+      type: exec
+      action: "npx drizzle-kit generate"
+      color: green
+    - title: "Push"
+      type: exec
+      action: "npx drizzle-kit push"
+    - title: "Pull"
+      type: exec
+      action: "npx drizzle-kit introspect"
+    - title: "Migrate"
+      type: exec
+      action: "npx drizzle-kit migrate"
+      color: orange
+    - title: "Drop"
+      type: exec
+      action: "npx drizzle-kit drop"
+      color: red
